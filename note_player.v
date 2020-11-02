@@ -17,9 +17,9 @@ module note_player(
     output note_done3,
     input  beat,                 // This is our 1/48th second beat
     input  generate_next_sample, // Tells us when the codec wants a new sample
-    output [15:0] sample_out1,  // Our sample output - gets combined in adder
-    output [15:0] sample_out2,
-    output [15:0] sample_out3,
+    output [17:0] sample_out1,  // Our sample output - gets combined in adder
+    output [17:0] sample_out2,
+    output [17:0] sample_out3,
     output sample_ready1,     // Tells the codec when we've got a sample
     output sample_ready2,
     output sample_ready3

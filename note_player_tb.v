@@ -7,7 +7,7 @@ module note_player_tb();
     
     /// Outputs ///
     wire beat, note_done1, note_done2, note_done3;
-    wire [15:0] sample_out1, sample_out2, sample_out3;
+    wire [17:0] sample_out1, sample_out2, sample_out3;
     wire sample_ready1, sample_ready2, sample_ready3;
 
     note_player np(
