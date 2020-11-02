@@ -1,26 +1,26 @@
 module note_player(
     input clk,
     input reset,
-    input play_enable,  // When high we play, when low we don't.
+    input play_enable,          // When high we play, when low we don't.
     input [5:0] note_to_load1,  // The note to play
     input [5:0] note_to_load2,
     input [5:0] note_to_load3,
-    input [5:0] duration1,  // The duration of the note to play
+    input [5:0] duration1,      // The duration of the note to play
     input [5:0] duration2,
     input [5:0] duration3,
-    input load_new_note1,  // Tells us when we have a new note to load
+    input load_new_note1,       // Tells us when we have a new note to load
     input load_new_note2,
     input load_new_note3,
-    input activate,         // Tells us if the counters should counting
-    output note_done1,  // When we are done with the note this stays high.
+    input activate,             // Tells us if the counters should counting
+    output note_done1,          // When we are done with the note this stays high.
     output note_done2,
     output note_done3,
-    input beat,  // This is our 1/48th second beat
-    input generate_next_sample,  // Tells us when the codec wants a new sample
+    input beat,                 // This is our 1/48th second beat
+    input generate_next_sample, // Tells us when the codec wants a new sample
     output [15:0] sample_out1,  // Our sample output - gets combined in adder
     output [15:0] sample_out2,
     output [15:0] sample_out3,
-    output new_sample_ready  // Tells the codec when we've got a sample
+    output new_sample_ready     // Tells the codec when we've got a sample
 );
 
 /// Generate Samples for each Note

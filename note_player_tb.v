@@ -1,25 +1,37 @@
 module note_player_tb();
-
-    reg clk, reset, play_enable, generate_next_sample;
-    reg [5:0] note_to_load;
-    reg [5:0] duration_to_load;
-    reg load_new_note;
-    wire done_with_note, new_sample_ready, beat;
-    wire [15:0] sample_out;
+    /// Inputs ///
+    reg clk, reset, play_enable, generate_next_sample, activate;
+    reg load_new_note1, load_new_note2, load_new_note3;
+    reg [5:0] note_to_load1, note_to_load2, note_to_load3;
+    reg [5:0] duration1, duration2, duration3 = 5'b0;
+    
+    /// Outputs ///
+    wire new_sample_ready, beat, note_done1, note_done2, note_done3;
+    wire [15:0] sample_out1, sample_out2, sample_out3;
 
     note_player np(
         .clk(clk),
         .reset(reset),
 
         .play_enable(play_enable),
-        .note_to_load(note_to_load),
-        .duration_to_load(duration_to_load),
-        .load_new_note(load_new_note),
-        .done_with_note(done_with_note),
-
+        .note_to_load1(note_to_load1),
+        .note_to_load2(note_to_load2),
+        .note_to_load3(note_to_load3),
+        .duration1(duration1),
+        .duration2(duration2),
+        .duration3(duration3),
+        .load_new_note1(load_new_note1),
+        .load_new_note2(load_new_note2),
+        .load_new_note3(load_new_note3),
+        .note_done1(note_done1),
+        .note_done2(note_done2),
+        .note_done3(note_done3),
+        .activate(activate),
         .beat(beat),
         .generate_next_sample(generate_next_sample),
-        .sample_out(sample_out),
+        .sample_out1(sample_out1),
+        .sample_out2(sample_out2),
+        .sample_out3(sample_out3),
         .new_sample_ready(new_sample_ready)
     );
 
@@ -43,61 +55,100 @@ module note_player_tb();
     initial begin
         reset = 1'b1; // in order to get the beat generator to work - MUST start w reset HIGH
         #10
-    
-        // setting everything to 0
         reset = 1'b0;
-        play_enable = 1'b0;
-        note_to_load = 1'b0;
-        duration_to_load = 1'b0;
-        load_new_note = 1'b0;
-        generate_next_sample = 1'b0;
         #10
-        $display("play_enable = %d, note_to_load = %b, duration = %d, load_new_note = %d, done_w_note = %d, beat = %d, generate_next = %d, sample_out = %b, new_samp_ready = %d", play_enable, note_to_load, duration_to_load, load_new_note, done_with_note, beat, generate_next_sample, sample_out, new_sample_ready);
-
-        // test 1
+        activate = 1'b1;
+        
+        /// Test 1
+        ///  only have Note 1, make sure retained basic functionality
+//        play_enable = 1'b1;         // keep HIGH for now
+//        note_to_load1 = 6'd44;      // note 44 - E4
+//        duration1 = 6'd6;           // 6/48ths
+//        load_new_note1 = 1'b1;      
+//         #10
+//        load_new_note1 = 1'b0;        
+//        repeat(1000000)
+//        #5
+//        generate_next_sample= ~generate_next_sample;
+//        #500
+//        generate_next_sample = 1'b0;
+//        $display("ONE NOTE:");
+//        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load1, duration1, load_new_note1, sample_out1);
+//        #1000
+        #50000
         play_enable = 1'b1;         // keep HIGH for now
-        note_to_load = 6'd44;       // note 44 - E4
-        duration_to_load = 6'd6;    // 6/48ths
-        load_new_note = 1'b1; 
-         #10
-        load_new_note = 1'b0;        
+        note_to_load1 = 6'd44;      // note 44 - E4
+        duration1 = 6'd6;           // 6/48ths
+        load_new_note1 = 1'b1;      
+         #1000
+        load_new_note1 = 1'b0;        
         repeat(50000)
         #5
         generate_next_sample= ~generate_next_sample;
         #500
         generate_next_sample = 1'b0;
-        $display("play_enable = %d, note_to_load = %b, duration = %d, load_new_note = %d, done_w_note = %d, beat = %d, generate_next = %d, sample_out = %b, new_samp_ready = %d", play_enable, note_to_load, duration_to_load, load_new_note, done_with_note, beat, generate_next_sample, sample_out, new_sample_ready);
-        #400
-        
-         // test 2
+        $display("ONE NOTE:");
+        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load1, duration1, load_new_note1, sample_out1);
+        #1000
+               
+        /// Test 2 
+        ///  only have Note 1&2 - same duration
+        // Note 1
         play_enable = 1'b1;         // keep HIGH for now
-        note_to_load = 6'd45;       // note 45
-        duration_to_load = 6'd4;    // 4/48ths
-        load_new_note = 1'b1;
-        #10
-        load_new_note = 1'b0;       
-        repeat(50000) #20
+        note_to_load1 = 6'd44;      // note 44 - E4
+        duration1 = 6'd6;           // 6/48ths
+        // Note 2
+        note_to_load2 = 6'd44;      // note 44 - E4
+        duration2 = 6'd6;           // 6/48ths
+        
+        load_new_note1 = 1'b1;
+        load_new_note2 = 1'b1;      
+         #10
+        load_new_note1 = 1'b0;        
+        load_new_note2 = 1'b0;        
+        repeat(50000)
         #5
         generate_next_sample= ~generate_next_sample;
         #500
-        load_new_note = 1'b0;
         generate_next_sample = 1'b0;
-        $display("play_enable = %d, note_to_load = %b, duration = %d, load_new_note = %d, done_w_note = %d, beat = %d, generate_next = %d, sample_out = %b, new_samp_ready = %d", play_enable, note_to_load, duration_to_load, load_new_note, done_with_note, beat, generate_next_sample, sample_out, new_sample_ready);
-        #100
+        $display("TWO NOTES:");
+        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load1, duration1, load_new_note1, sample_out1);
+        $display("note2 = %d, duration2 = %d, load_new_note2 = %d, sample_out2 = %b", note_to_load2, duration2, load_new_note2, sample_out2);
+        #1000
+ 
+        /// Test 3 
+        ///  all 3 Notes - same duration
+        // Note 1
         play_enable = 1'b1;         // keep HIGH for now
-        note_to_load = 6'd2;       // note 45
-        duration_to_load = 6'd4;    // 4/48ths
-        load_new_note = 1'b1;
-        #10
-        load_new_note = 1'b0;        
-        repeat(50000) #20
+        note_to_load1 = 6'd44;      // note 44 - E4
+        duration1 = 6'd6;           // 6/48ths
+        // Note 2
+        note_to_load2 = 6'd44;      // note 44 - E4
+        duration2 = 6'd6;           // 6/48ths
+        // Note 3
+        note_to_load3 = 6'd44;      // note 44 - E4
+        duration3 = 6'd6;           // 6/48ths
+        
+        load_new_note1 = 1'b1;
+        load_new_note2 = 1'b1;      
+        load_new_note3 = 1'b1;      
+         #10
+        load_new_note1 = 1'b0;        
+        load_new_note2 = 1'b0;        
+        load_new_note3 = 1'b0;        
+        repeat(50000)
+        #5
         generate_next_sample= ~generate_next_sample;
         #500
-        load_new_note = 1'b0;
         generate_next_sample = 1'b0;
-        $display("play_enable = %d, note_to_load = %b, duration = %d, load_new_note = %d, done_w_note = %d, beat = %d, generate_next = %d, sample_out = %b, new_samp_ready = %d", play_enable, note_to_load, duration_to_load, load_new_note, done_with_note, beat, generate_next_sample, sample_out, new_sample_ready);
-        #100
+        $display("THREE NOTES:");
+        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load1, duration1, load_new_note1, sample_out1);
+        $display("note2 = %d, duration2 = %d, load_new_note2 = %d, sample_out2 = %b", note_to_load2, duration2, load_new_note2, sample_out2);
+        $display("note3 = %d, duration3 = %d, load_new_note3 = %d, sample_out3 = %b", note_to_load3, duration3, load_new_note3, sample_out3);
+        #1000
+               
         
+               
         reset = 1'b1; //should reset everythhing
         #5000
         reset = 1'b0;
