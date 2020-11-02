@@ -1,33 +1,34 @@
 module note_player(
-    input clk,
-    input reset,
-    input play_enable,          // When high we play, when low we don't.
-    input [5:0] note_to_load1,  // The note to play
-    input [5:0] note_to_load2,
-    input [5:0] note_to_load3,
-    input [5:0] duration1,      // The duration of the note to play
-    input [5:0] duration2,
-    input [5:0] duration3,
-    input load_new_note1,       // Tells us when we have a new note to load
-    input load_new_note2,
-    input load_new_note3,
-    input activate,             // Tells us if the counters should counting
+    input  clk,
+    input  reset,
+    input  play_enable,          // When high we play, when low we don't.
+    input  [5:0] note_to_load1,  // The note to play
+    input  [5:0] note_to_load2,
+    input  [5:0] note_to_load3,
+    input  [5:0] duration1,      // The duration of the note to play
+    input  [5:0] duration2,
+    input  [5:0] duration3,
+    input  load_new_note1,       // Tells us when we have a new note to load
+    input  load_new_note2,
+    input  load_new_note3,
+    input  activate,             // Tells us if the counters should counting
     output note_done1,          // When we are done with the note this stays high.
     output note_done2,
     output note_done3,
-    input beat,                 // This is our 1/48th second beat
-    input generate_next_sample, // Tells us when the codec wants a new sample
+    input  beat,                 // This is our 1/48th second beat
+    input  generate_next_sample, // Tells us when the codec wants a new sample
     output [15:0] sample_out1,  // Our sample output - gets combined in adder
     output [15:0] sample_out2,
     output [15:0] sample_out3,
-    output new_sample_ready     // Tells the codec when we've got a sample
+    output sample_ready1,     // Tells the codec when we've got a sample
+    output sample_ready2,
+    output sample_ready3
 );
 
 /// Generate Samples for each Note
 //////////// NOTE 1 FLIP-FLOPS ////////////     
     wire [19:0] step_size1;
     wire [5:0] freq_rom_in1;
-    wire sample_ready1;
 
     dffre #(.WIDTH(6)) freq_reg1 (
         .clk(clk),
@@ -47,7 +48,7 @@ module note_player(
         .clk(clk),
         .reset(reset),
         .step_size(step_size1),
-        .generate_next(play_enable && generate_next_sample), // edit?
+        .generate_next(play_enable && generate_next_sample),
         .sample_ready(sample_ready1),
         .sample(sample_out1)
     );
@@ -55,7 +56,6 @@ module note_player(
 //////////// NOTE 2 FLIP-FLOPS ////////////     
     wire [19:0] step_size2;
     wire [5:0] freq_rom_in2;
-    wire sample_ready2;
 
     dffre #(.WIDTH(6)) freq_reg2 (
         .clk(clk),
@@ -75,7 +75,7 @@ module note_player(
         .clk(clk),
         .reset(reset),
         .step_size(step_size2),
-        .generate_next(play_enable && generate_next_sample), // edit?
+        .generate_next(play_enable && generate_next_sample),
         .sample_ready(sample_ready2),
         .sample(sample_out2)
     );
@@ -83,7 +83,6 @@ module note_player(
 //////////// NOTE 3 FLIP-FLOPS ////////////     
     wire [19:0] step_size3;
     wire [5:0] freq_rom_in3;
-    wire sample_ready3;
 
     dffre #(.WIDTH(6)) freq_reg3 (
         .clk(clk),
@@ -103,7 +102,7 @@ module note_player(
         .clk(clk),
         .reset(reset),
         .step_size(step_size3),
-        .generate_next(play_enable && generate_next_sample), // edit?
+        .generate_next(play_enable && generate_next_sample),
         .sample_ready(sample_ready3),
         .sample(sample_out3)
     );
@@ -147,6 +146,7 @@ module note_player(
     assign note_done1 = (count1 == 6'b0) && beat;
     assign note_done2 = (count2 == 6'b0) && beat;
     assign note_done3 = (count3 == 6'b0) && beat;
-    assign new_sample_ready = sample_ready1 && sample_ready2 && sample_ready3; // right?
+    wire [17:0] sum_sample;
+    assign sum_sample = sample_out1 + sample_out2 + sample_out3;
 
 endmodule
