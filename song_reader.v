@@ -28,7 +28,7 @@ module song_reader(
 );
 
     wire [`SONG_WIDTH-1:0] curr_note_num, next_note_num;
-    wire [`NOTE_WIDTH + `DURATION_WIDTH -1:0] note_and_duration;
+    wire [15:0] rom_out;
     wire [`SONG_WIDTH + 1:0] rom_addr = {song, curr_note_num};
 
     wire [`SWIDTH-1:0] state;
@@ -51,20 +51,20 @@ module song_reader(
     );
     
     //Counter
-    wire [5:0] duration;
-    wire [5:0] next_count;
-    wire [5:0] count;
-    dffr#(6) SR_counter (
+    wire [15:0] duration2;
+    wire [15:0] next_count;
+    wire [15:0] count;
+    dffr#(16) SR_counter (
         .clk(clk),
-        .rst(reset),
+        .r(reset),
         .d(next_count),
         .q(count)
     );
-    assign duration = note_and_duration[15] ? note_and_duration[9:3] : 6'b0;
-    assign next_count = (count!=0) ? (count - 1): duration;
-    assign advance = (count != 0);
+    assign duration2 = rom_out[15] ? rom_out[8:3] : 6'b000000;
+    assign next_count = (count==duration2) ? 6'b0 :(count + 1);
+    //assign advance = (count != 0);
     
-    song_rom rom(.clk(clk), .addr(rom_addr), .dout(note_and_duration));
+    song_rom rom(.clk(clk), .addr(rom_addr), .dout(rom_out));
 
     always @(*) begin
         case (state)
@@ -79,13 +79,15 @@ module song_reader(
             default:            next = `PAUSED;
         endcase
     end
-    assign advance = note_and_duration[15];  
+    
     assign {overflow, next_note_num} =
         (state == `INCREMENT_ADDRESS) ? {1'b0, curr_note_num} + 1
                                       : {1'b0, curr_note_num};
                                       
     assign new_note = (state == `NEW_NOTE_READY);
-    assign {note, duration} = note_and_duration;
+    assign note = rom_out[14:9];
+    assign duration = rom_out[8:3];
+    //assign {note, duration} = rom_out;
     assign song_done = overflow;
     
     

@@ -29,10 +29,11 @@ module song_reader_tb();
 
     initial begin
     reset = 1'b1;
-    #10
+    #20
     
     // Play song 0
     reset     = 1'b0;
+  
     song      = 2'd0;
     play      = 1'b1; // press play once just to start
     note_done = 1'b1;
@@ -46,16 +47,16 @@ module song_reader_tb();
     #50
     
     //Check when play not high
-    #100
-    play = 0;
-    #100
-    play = 1;
+//    #100
+//    play = 0;
+//    #100
+//    play = 1;
     
     //Check Reset
-    #20
-    reset = 1;
-    #10
-    reset = 0;
+//    #20
+//    reset = 1;
+//    #10
+//    reset = 0;
    
     
  
