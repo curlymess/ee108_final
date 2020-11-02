@@ -29,7 +29,7 @@ module song_reader_tb();
 
     initial begin
     reset = 1'b1;
-    #20
+    #15
     
     // Play song 0
     reset     = 1'b0;

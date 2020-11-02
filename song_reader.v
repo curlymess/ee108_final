@@ -51,20 +51,29 @@ module song_reader(
     );
     
     //Counter
-    wire [15:0] duration2;
-    wire [15:0] next_count;
-    wire [15:0] count;
-    dffr#(16) SR_counter (
+    wire [5:0] duration2;
+    reg  [5:0] next_count;
+    wire [5:0] count;
+    dffr#(6) SR_counter (
         .clk(clk),
         .r(reset),
         .d(next_count),
         .q(count)
     );
-    assign duration2 = rom_out[15] ? rom_out[8:3] : 6'b000000;
-    assign next_count = (count==duration2) ? 6'b0 :(count + 1);
-    //assign advance = (count != 0);
+    
     
     song_rom rom(.clk(clk), .addr(rom_addr), .dout(rom_out));
+    
+    assign duration = rom_out[8:3];
+    assign duration2 = rom_out[15] ? duration : 6'b000000; // oh this makes duration == 0
+    always @(*) begin
+        if ( count != 6'd0 ) begin
+            next_count = count - 6'd1;
+        end else begin 
+            next_count = duration2;
+        end
+    end
+    //assign advance = (count != 0);
 
     always @(*) begin
         case (state)
