@@ -45,10 +45,9 @@ module sine_reader_tb();
     reset = 1'b1; //sample should reset to 0
     #100; 
     reset = 1'b0;
-<<<<<<< HEAD
+
     repeat(50000) #20
         generate_next = ~generate_next; //reload the previous step_size
-=======
     
     repeat(5000) begin //reload previous step size
     #5 generate_next = 1'b0;
@@ -56,7 +55,6 @@ module sine_reader_tb();
     end
     generate_next = 1'b0;
     
->>>>>>> 2e42e221bc4b5dd0c998c941d7e3bfb6c5ba0a68
     $stop;
     end
 endmodule

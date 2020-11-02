@@ -123,7 +123,6 @@ module mcu_tb();
         song_done = 1'b1; 
         #10
         $display("next song: %d, playbttn: %d, nextbttn: %d, songdone: %d, play: %d, reset_player: %d", song, play_button, next_button, song_done, play, reset_player);
-<<<<<<< Updated upstream
         
         // song_done on song 0 - next song = 1, reset player = 1
         play_button = 1'b0;
@@ -143,14 +142,12 @@ module mcu_tb();
         $display("next song: %d, playbttn: %d, nextbttn: %d, songdone: %d, play: %d, reset_player: %d", song, play_button, next_button, song_done, play, reset_player);
                   
         #10
-=======
 //        next_button = 1;
 //        #20
 //        next_button = 0;
 //        play_button = 1;
 //        #10
         //reset = 1;
->>>>>>> Stashed changes
         $stop;               
     end
 
