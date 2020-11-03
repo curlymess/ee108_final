@@ -18,9 +18,9 @@ module song_reader(
     input reset,
     input play,
     input [1:0] song,
-    input note_done, 
-    input note2_done, 
-    input note3_done,
+    input note_done1, 
+    input note_done2, 
+    input note_done3,
     output wire song_done,
     output wire [5:0] note,
     output wire [5:0] duration,
@@ -77,13 +77,14 @@ module song_reader(
     end
     //assign advance = (count != 0);
 
+    /// NOTE DONE IN WAIT
     always @(*) begin
         case (state)
             `PAUSED:            next = play ? `RETRIEVE_NOTE : `PAUSED;
             `RETRIEVE_NOTE:     next = play ? `NEW_NOTE_READY : `PAUSED;
             `NEW_NOTE_READY:    next = play ? `WAIT: `PAUSED;
             `WAIT:              next = !play ? `PAUSED
-                                             : (note_done ? `INCREMENT_ADDRESS
+                                             : ((note_done1 || note_done2 || note_done3) ? `INCREMENT_ADDRESS
                                                           : `WAIT);
             `INCREMENT_ADDRESS: next = (play && ~overflow) ? `RETRIEVE_NOTE
                                                            : `PAUSED;

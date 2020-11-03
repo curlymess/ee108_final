@@ -61,18 +61,23 @@ module music_player(
 //
     wire [5:0] note_to_play;
     wire [5:0] duration_for_note;
-    wire new_note;
-    wire note_done;
+    wire [2:0] parameters;
+    wire new_note, advance;
+    wire note_done1, note_done2, note_done2;
     song_reader song_reader(
         .clk(clk),
         .reset(reset | reset_player),
         .play(play),
         .song(current_song),
+        .note_done1(note_done1),
+        .note_done2(note_done2),
+        .note_done3(note_done3),
         .song_done(song_done),
         .note(note_to_play),
         .duration(duration_for_note),
         .new_note(new_note),
-        .note_done(note_done)
+        .advance(advance),
+        .parameters(parameters)
     );
 
 //   
@@ -82,8 +87,8 @@ module music_player(
 //  
     wire beat;
     wire generate_next_sample;
-    wire [15:0] note_sample;
-    wire note_sample_ready;
+    wire [17:0] note_sample1, note_sample2, note_sample3;
+    wire sample_ready1, sample_ready2, sample_ready3;
     note_player note_player(
         .clk(clk),
         .reset(reset),
@@ -91,11 +96,18 @@ module music_player(
         .note_to_load(note_to_play),
         .duration_to_load(duration_for_note),
         .load_new_note(new_note),
-        .done_with_note(note_done),
+        .activate(activate),
         .beat(beat),
         .generate_next_sample(generate_next_sample),
-        .sample_out(note_sample),
-        .new_sample_ready(note_sample_ready)
+        .note_done1(note_done1),
+        .note_done2(note_done2),
+        .note_done3(note_done3),
+        .sample_out1(note_sample1),
+        .sample_out2(note_sample2),
+        .sample_out3(note_sample3),
+        .sample_ready1(sample_ready1),
+        .sample_ready2(sample_ready2),
+        .sample_ready3(sample_ready3)
     );
       
 //   
