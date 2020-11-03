@@ -5,12 +5,10 @@ module note_player(
     input  [5:0] note_to_load,  // The note to play
     input  [5:0] duration,      // The duration of the note to play
     input  load_new_note,       // Tells us when we have a new note to load
-    input  activate,             // Tells us if the counters should counting
+    input  advance,             // Tells us if the counters should counting
     input  beat,                 // This is our 1/48th second beat
     input  generate_next_sample, // Tells us when the codec wants a new sample
-    output [17:0] sample_out1,  // Our sample output - gets combined in adder
-    output [17:0] sample_out2,
-    output [17:0] sample_out3,
+    output [17:0] sample_out,  // Our sample output - gets combined in adder
     output note_done1,          // When we are done with the note this stays high.
     output note_done2,
     output note_done3,
@@ -146,7 +144,7 @@ end
     dffre #(.WIDTH(6)) counter1 (
         .clk(clk),
         .r(reset),
-        .en((beat || load_new_note1) && play_enable && activate),
+        .en((beat || load_new_note1) && play_enable && advance),
         .d(next_count1),
         .q(count1)
     );
@@ -156,7 +154,7 @@ end
     dffre #(.WIDTH(6)) counter2 (
         .clk(clk),
         .r(reset),
-        .en((beat || load_new_note2) && play_enable && activate),
+        .en((beat || load_new_note2) && play_enable && advance),
         .d(next_count2),
         .q(count2)
     );
@@ -166,7 +164,7 @@ end
     dffre #(.WIDTH(6)) counter3 (
         .clk(clk),
         .r(reset),
-        .en((beat || load_new_note3) && play_enable && activate),
+        .en((beat || load_new_note3) && play_enable && advance),
         .d(next_count3),
         .q(count3)
     );
@@ -178,6 +176,6 @@ end
     assign note_done2 = (count2 == 6'b0) && beat;
     assign note_done3 = (count3 == 6'b0) && beat;
     wire [17:0] sum_sample;
-    assign sum_sample = sample_out1 + sample_out2 + sample_out3;
+    assign sample_out = sample_out1 + sample_out2 + sample_out3;
 
 endmodule

@@ -23,7 +23,7 @@ module music_player(
 
     // Our final output sample to the codec. This needs to be synced to
     // new_frame.
-    output wire [15:0] sample_out
+    output wire [17:0] sample_out
 );
     // The BEAT_COUNT is parameterized so you can reduce this in simulation.
     // If you reduce this to 100 your simulation will be 10x faster.
@@ -62,7 +62,9 @@ module music_player(
     wire [5:0] note_to_play;
     wire [5:0] duration_for_note;
     wire new_note;
-    wire note_done;
+    wire note_done1, note_done2, note_done3;
+    wire advance;
+    wire [2:0] parameters;
     song_reader song_reader(
         .clk(clk),
         .reset(reset | reset_player),
@@ -72,7 +74,11 @@ module music_player(
         .note(note_to_play),
         .duration(duration_for_note),
         .new_note(new_note),
-        .note_done(note_done)
+        .note_done(note_done1),
+        .note2_done(note_done2),
+        .note3_done(note_done3),
+        .advance(advance),
+        .parameters(parameters)
     );
 
 //   
@@ -82,20 +88,27 @@ module music_player(
 //  
     wire beat;
     wire generate_next_sample;
-    wire [15:0] note_sample;
+    wire [17:0] sample_out_NP;
     wire note_sample_ready;
+    wire sample_ready1, sample_ready2, sample_ready3;
     note_player note_player(
         .clk(clk),
         .reset(reset),
         .play_enable(play),
         .note_to_load(note_to_play),
-        .duration_to_load(duration_for_note),
+        .duration(duration_for_note),
         .load_new_note(new_note),
-        .done_with_note(note_done),
+        .advance(advance),
         .beat(beat),
         .generate_next_sample(generate_next_sample),
-        .sample_out(note_sample),
-        .new_sample_ready(note_sample_ready)
+        //Outputs
+        .sample_out(sample_out_NP),
+        .note_done1(note_done1),
+        .note_done2(note_done2),
+        .note_done3(note_done3),
+        .sample_ready1(sample_ready1),
+        .sample_ready2(sample_ready2),
+        .sample_ready3(sample_ready3)
     );
       
 //   
@@ -122,7 +135,7 @@ module music_player(
     codec_conditioner codec_conditioner(
         .clk(clk),
         .reset(reset),
-        .new_sample_in(note_sample),
+        .new_sample_in(sample_out_NP),
         .latch_new_sample_in(note_sample_ready),
         .generate_next_sample(generate_next_sample),
         .new_frame(new_frame),

@@ -34,11 +34,11 @@
 module codec_conditioner(
    input clk,  // Our clock
    input reset,  // Our reset
-   input [15:0] new_sample_in,  // The new sample for the next new_frame
+   input [17:0] new_sample_in,  // The new sample for the next new_frame
    input latch_new_sample_in,   // Latches the value in new_sample_in
    output wire generate_next_sample, // 1 if it is time to generate a new sample
    input new_frame,  // Codec input triggering output of the next valid_sample
-   output wire [15:0] valid_sample  // Stable while new_frame is high
+   output wire [17:0] valid_sample  // Stable while new_frame is high
 );
 
    // Generate a one-pulse signal when new_frame goes high.
@@ -54,8 +54,8 @@ module codec_conditioner(
 
    // The next sample we are storing so we can output it immediately on the next
    // new_frame.
-   wire [15:0] next_sample_latched;
-   dffre #(16) next_sample_latch(
+   wire [17:0] next_sample_latched;
+   dffre #(18) next_sample_latch(
       .clk(clk),
       .r(reset),
       .en(latch_new_sample_in),
@@ -65,8 +65,8 @@ module codec_conditioner(
 
    // The sample we are currently outputting.
    // We latch in the new next_sample when we get a new_frame.
-   wire [15:0] latched_current_sample;
-   dffre #(16) current_sample_latch(
+   wire [17:0] latched_current_sample;
+   dffre #(18) current_sample_latch(
       .clk(clk),
       .r(reset),
       .en(generate_next_sample),
