@@ -5,7 +5,7 @@
 //  beat_generator, and codec_conditioner. It provides an output that indicates
 //  a new sample (new_sample_generated) which will be used in lab 5.
 //
-
+///////
 module music_player(
     // Standard system clock and reset
     input clk,

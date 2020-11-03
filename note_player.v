@@ -26,8 +26,8 @@ module note_player(
     reg [5:0] duration1, duration2, duration3;
     reg  [5:0] note_to_load1, note_to_load2, note_to_load3;
     reg  load_new_note1, load_new_note2, load_new_note3;
-
-    wire [5:0] count1, count2, count3, next_count1, next_count2, next_count3;  
+    wire [5:0] count1, count2, count3, next_count1, next_count2, next_count3;
+      
 always @(*) begin
     if (count1 == 0 && load_new_note) begin
         load_new_note1 = load_new_note;
@@ -61,7 +61,8 @@ always @(*) begin
         note_to_load1 = 6'b0;
      end
 end 
-    
+
+//
       
     dffre #(.WIDTH(6)) freq_reg1 (
         .clk(clk),
