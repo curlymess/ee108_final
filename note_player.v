@@ -19,51 +19,68 @@ module note_player(
     output sample_ready3
 );
 
-/// Generate Samples for each Note
-//////////// NOTE 1 FLIP-FLOPS ////////////     
+/// Generate Samples for each Note    
     wire [19:0] step_size1;
     wire [5:0] freq_rom_in1;
     reg [5:0] duration1, duration2, duration3;
     reg  [5:0] note_to_load1, note_to_load2, note_to_load3;
     reg  load_new_note1, load_new_note2, load_new_note3;
     wire [5:0] count1, count2, count3, next_count1, next_count2, next_count3;
-      
+ 
+/// GOAL - Load New Note into proper Note Number
 always @(*) begin
     if (count1 == 0 && load_new_note) begin
         load_new_note1 = load_new_note;
         load_new_note2 = 1'b0;
         load_new_note3 = 1'b0;
+        
+        note_to_load1 = note_to_load;
         note_to_load2 = 6'b0;
         note_to_load3 = 6'b0;
-        note_to_load1 = note_to_load;
-    end else if (count2 == 0 && load_new_note) begin
-        load_new_note2 = load_new_note;
-        load_new_note1 = 1'b0;
-        load_new_note3 = 1'b0;
-        note_to_load2 = note_to_load;
-        note_to_load1 = 6'b0;
-        note_to_load3 = 6'b0;
-    end else if (count3 == 0 && load_new_note) begin
-        load_new_note3 = load_new_note;
-        note_to_load3 = note_to_load;
         
+        duration1 = duration;
+        duration2 = 6'b0;
+        duration3 = 6'b0;
+    end else if (count2 == 0 && load_new_note) begin
+        load_new_note1 = 1'b0;
+        load_new_note2 = load_new_note;
+        load_new_note3 = 1'b0;
+
+        note_to_load1 = 6'b0;
+        note_to_load2 = note_to_load;
+        note_to_load3 = 6'b0;
+        
+        duration1 = 6'b0;
+        duration2 = duration;
+        duration3 = 6'b0;
+    end else if (count3 == 0 && load_new_note) begin
         load_new_note1 = 1'b0;
         load_new_note2 = 1'b0;
-        note_to_load2 = 6'b0;
+        load_new_note3 = load_new_note;
+
         note_to_load1 = 6'b0;
-    
+        note_to_load2 = 6'b0;
+        note_to_load3 = note_to_load;
+        
+        duration1 = 6'b0;
+        duration2 = duration;
+        duration3 = 6'b0;
     end else begin 
         load_new_note1 = 1'b0;
         load_new_note2 = 1'b0;
         load_new_note3 = 1'b0;
+        
+        note_to_load1 = 6'b0;
         note_to_load2 = 6'b0;
         note_to_load3 = 6'b0;
-        note_to_load1 = 6'b0;
-     end
+        
+        duration1 = 6'b0;
+        duration2 = duration;
+        duration3 = 6'b0;
+    end
 end 
 
-//
-      
+//////////// NOTE 1 FLIP-FLOPS ////////////       
     dffre #(.WIDTH(6)) freq_reg1 (
         .clk(clk),
         .r(reset),
@@ -150,7 +167,7 @@ end
         .d(next_count1),
         .q(count1)
     );
-    assign next_count1 = (reset || note_done1 || load_new_note1)
+    assign next_count1 = (reset || note_done1 || load_new_note1 || count1 == 6'b0)
                         ? duration1 : count1 - 1;
 
     dffre #(.WIDTH(6)) counter2 (
@@ -160,7 +177,7 @@ end
         .d(next_count2),
         .q(count2)
     );
-    assign next_count2 = (reset || note_done2 || load_new_note2)
+    assign next_count2 = (reset || note_done2 || load_new_note2 || count2 == 6'b0)
                         ? duration2 : count2 - 1;
 
     dffre #(.WIDTH(6)) counter3 (
@@ -170,7 +187,7 @@ end
         .d(next_count3),
         .q(count3)
     );
-    assign next_count3 = (reset || note_done3 || load_new_note3)
+    assign next_count3 = (reset || note_done3 || load_new_note3 || count3 == 6'b0)
                         ? duration3 : count3 - 1;
 
 /// Outputs

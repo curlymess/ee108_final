@@ -65,7 +65,7 @@ module song_reader(
     song_rom rom(.clk(clk), .addr(rom_addr), .dout(rom_out));
     
     assign duration = rom_out[8:3];
-    assign duration2 = rom_out[15] ? duration : 6'b000000; // oh this makes duration == 0
+    assign duration2 = rom_out[15] ? duration : 6'b000000;
     always @(*) begin
         if ( count != 6'd0 ) begin
             next_count = count - 6'd1;
