@@ -23,16 +23,11 @@ module note_player(
 //////////// NOTE 1 FLIP-FLOPS ////////////     
     wire [19:0] step_size1;
     wire [5:0] freq_rom_in1;
-    reg [5:0] duration1;
-    reg  [5:0] duration2;
-    reg  [5:0] duration3;
-    reg  [5:0] note_to_load1;
-    reg  [5:0] note_to_load2;
-    reg  [5:0] note_to_load3;
-    reg  load_new_note1;
-    reg  load_new_note2;
-    reg  load_new_note3;
-    
+    reg [5:0] duration1, duration2, duration3;
+    reg  [5:0] note_to_load1, note_to_load2, note_to_load3;
+    reg  load_new_note1, load_new_note2, load_new_note3;
+
+    wire [5:0] count1, count2, count3, next_count1, next_count2, next_count3;  
 always @(*) begin
     if (count1 == 0 && load_new_note) begin
         load_new_note1 = load_new_note;
@@ -64,13 +59,10 @@ always @(*) begin
         note_to_load2 = 6'b0;
         note_to_load3 = 6'b0;
         note_to_load1 = 6'b0;
-     
+     end
 end 
     
       
-
-
-
     dffre #(.WIDTH(6)) freq_reg1 (
         .clk(clk),
         .r(reset),
@@ -150,7 +142,6 @@ end
 ////////////////////////////////////////////   
     
 /// Counters
-    wire [5:0] count1, next_count1;
     dffre #(.WIDTH(6)) counter1 (
         .clk(clk),
         .r(reset),
@@ -161,7 +152,6 @@ end
     assign next_count1 = (reset || note_done1 || load_new_note1)
                         ? duration1 : count1 - 1;
 
-    wire [5:0] count2, next_count2;
     dffre #(.WIDTH(6)) counter2 (
         .clk(clk),
         .r(reset),
@@ -172,7 +162,6 @@ end
     assign next_count2 = (reset || note_done2 || load_new_note2)
                         ? duration2 : count2 - 1;
 
-    wire [5:0] count3, next_count3;
     dffre #(.WIDTH(6)) counter3 (
         .clk(clk),
         .r(reset),
