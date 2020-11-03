@@ -26,6 +26,7 @@ module note_player(
     reg  [5:0] note_to_load1, note_to_load2, note_to_load3;
     reg  load_new_note1, load_new_note2, load_new_note3;
     wire [5:0] count1, count2, count3, next_count1, next_count2, next_count3;
+    reg [5:0] count1_holder,count2_holder,count3_holder, note1_holder, note2_holder,note3_holder;
  
 /// GOAL - Load New Note into proper Note Number
 always @(*) begin
@@ -41,6 +42,10 @@ always @(*) begin
         duration1 = duration;
         duration2 = 6'b0;
         duration3 = 6'b0;
+        
+        count1_holder = duration1;
+        note1_holder = note_to_load;
+        
     end else if (count2 == 0 && load_new_note) begin
         load_new_note1 = 1'b0;
         load_new_note2 = load_new_note;
@@ -53,6 +58,10 @@ always @(*) begin
         duration1 = 6'b0;
         duration2 = duration;
         duration3 = 6'b0;
+        
+        count2_holder = duration1;
+        note2_holder = note_to_load;
+        
     end else if (count3 == 0 && load_new_note) begin
         load_new_note1 = 1'b0;
         load_new_note2 = 1'b0;
@@ -63,22 +72,27 @@ always @(*) begin
         note_to_load3 = note_to_load;
         
         duration1 = 6'b0;
-        duration2 = duration;
-        duration3 = 6'b0;
+        duration2 = 6'b0;
+        duration3 = duration;
+        
+        count3_holder = duration1;
+        note3_holder = note_to_load;
+        
     end else begin 
         load_new_note1 = 1'b0;
         load_new_note2 = 1'b0;
         load_new_note3 = 1'b0;
         
-        note_to_load1 = 6'b0;
+        note_to_load1 = note1_holder;
         note_to_load2 = 6'b0;
         note_to_load3 = 6'b0;
         
-        duration1 = 6'b0;
-        duration2 = duration;
+        duration1 = count1_holder;
+        duration2 = 6'b0;
         duration3 = 6'b0;
     end
-end 
+end
+
 
 //////////// NOTE 1 FLIP-FLOPS ////////////       
     dffre #(.WIDTH(6)) freq_reg1 (
@@ -158,6 +172,7 @@ end
         .sample(sample_out3)
     );
 ////////////////////////////////////////////   
+
     
 /// Counters
     dffre #(.WIDTH(6)) counter1 (
@@ -191,9 +206,9 @@ end
                         ? duration3 : count3 - 1;
 
 /// Outputs
-    assign note_done1 = (count1 == 6'b0) && beat;
-    assign note_done2 = (count2 == 6'b0) && beat;
-    assign note_done3 = (count3 == 6'b0) && beat;
+    assign note_done1 = (count1 == 6'b0);
+    assign note_done2 = (count2 == 6'b0);
+    assign note_done3 = (count3 == 6'b0);
     wire [17:0] sum_sample;
     assign sum_sample = sample_out1 + sample_out2 + sample_out3;
 
