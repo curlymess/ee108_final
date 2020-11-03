@@ -13,17 +13,10 @@ module note_player_tb();
     note_player np(
         .clk(clk),
         .reset(reset),
-
         .play_enable(play_enable),
-        .note_to_load1(note_to_load1),
-        .note_to_load2(note_to_load2),
-        .note_to_load3(note_to_load3),
-        .duration1(duration1),
-        .duration2(duration2),
-        .duration3(duration3),
-        .load_new_note1(load_new_note1),
-        .load_new_note2(load_new_note2),
-        .load_new_note3(load_new_note3),
+        .note_to_load(note_to_load),
+        .duration(duration),
+        .load_new_note(load_new_note),
         .note_done1(note_done1),
         .note_done2(note_done2),
         .note_done3(note_done3),
@@ -253,6 +246,10 @@ module note_player_tb();
         play_enable = 1'b0; //should stop counting
         #1000;
         play_enable = 1'b1; 
+        #100
+        activate = 1'b0; //should stop counting
+        #1000;
+        activate = 1'b1; 
         #1000
 
     $stop;
