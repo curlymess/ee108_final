@@ -43,9 +43,6 @@ always @(*) begin
         duration2 = 6'b0;
         duration3 = 6'b0;
         
-        count1_holder = duration1;
-        note1_holder = note_to_load;
-        
     end else if (count2 == 0 && load_new_note) begin
         load_new_note1 = 1'b0;
         load_new_note2 = load_new_note;
@@ -58,9 +55,6 @@ always @(*) begin
         duration1 = 6'b0;
         duration2 = duration;
         duration3 = 6'b0;
-        
-        count2_holder = duration1;
-        note2_holder = note_to_load;
         
     end else if (count3 == 0 && load_new_note) begin
         load_new_note1 = 1'b0;
@@ -75,22 +69,16 @@ always @(*) begin
         duration2 = 6'b0;
         duration3 = duration;
         
-        count3_holder = duration1;
-        note3_holder = note_to_load;
-        
-        //////////////////////////THESE HOLDERS WONT WORK BECAUSE LATCH
-        /////////////////////////
-        
     end else begin 
         load_new_note1 = 1'b0;
         load_new_note2 = 1'b0;
         load_new_note3 = 1'b0;
         
-        note_to_load1 = note1_holder;
+        note_to_load1 = 6'b0;
         note_to_load2 = 6'b0;
         note_to_load3 = 6'b0;
         
-        duration1 = count1_holder;
+        duration1 = 6'b0;
         duration2 = 6'b0;
         duration3 = 6'b0;
     end
@@ -181,18 +169,10 @@ end
     dffre #(.WIDTH(6)) counter1 (
         .clk(clk),
         .r(reset),
-        .en((beat || load_new_note1) && play_enable && activate),
+        .en(((beat && activate) || load_new_note1) && play_enable),
         .d(next_count1),
         .q(count1)
     );
-    
-    ///////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////DURATION1 IS RESET TO 0 IN IF STATEMENT ABOVE
-    //////////THEREFORE WE UPDATE NEXT COUNT TO BE 0 AND LOSE THE COUNTER VALUE
-    //THAT WE NEED IN ORDER TO "LOAD" IN THE VALUES UNTIL WE ENCOUNTER AN ACTIVATE HIGH
-    //WE NEED SOME WAY OF HOLDING ONTO THE VALUE UNTIL ACTIVATE GOES HIGH AND WE CAN 
-    //START COUNTING. THE FINAL ELSE STATEMENT IN THE ALWAYS BLOCK ABOVE IS WHAT IS 
-    //CAUSING THE ISSUE
     
     assign next_count1 = (reset || note_done1 || load_new_note1 || count1 == 6'b0)
                         ? duration1 : count1 - 1;
@@ -200,7 +180,7 @@ end
     dffre #(.WIDTH(6)) counter2 (
         .clk(clk),
         .r(reset),
-        .en((beat || load_new_note2) && play_enable && activate),
+        .en(((beat && activate) || load_new_note2) && play_enable),
         .d(next_count2),
         .q(count2)
     );
@@ -210,7 +190,7 @@ end
     dffre #(.WIDTH(6)) counter3 (
         .clk(clk),
         .r(reset),
-        .en((beat || load_new_note3) && play_enable && activate),
+        .en(((beat && activate) || load_new_note1) && play_enable),
         .d(next_count3),
         .q(count3)
     );
