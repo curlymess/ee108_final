@@ -78,6 +78,9 @@ always @(*) begin
         count3_holder = duration1;
         note3_holder = note_to_load;
         
+        //////////////////////////THESE HOLDERS WONT WORK BECAUSE LATCH
+        /////////////////////////
+        
     end else begin 
         load_new_note1 = 1'b0;
         load_new_note2 = 1'b0;
@@ -182,6 +185,15 @@ end
         .d(next_count1),
         .q(count1)
     );
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////DURATION1 IS RESET TO 0 IN IF STATEMENT ABOVE
+    //////////THEREFORE WE UPDATE NEXT COUNT TO BE 0 AND LOSE THE COUNTER VALUE
+    //THAT WE NEED IN ORDER TO "LOAD" IN THE VALUES UNTIL WE ENCOUNTER AN ACTIVATE HIGH
+    //WE NEED SOME WAY OF HOLDING ONTO THE VALUE UNTIL ACTIVATE GOES HIGH AND WE CAN 
+    //START COUNTING. THE FINAL ELSE STATEMENT IN THE ALWAYS BLOCK ABOVE IS WHAT IS 
+    //CAUSING THE ISSUE
+    
     assign next_count1 = (reset || note_done1 || load_new_note1 || count1 == 6'b0)
                         ? duration1 : count1 - 1;
 
