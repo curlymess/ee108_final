@@ -24,7 +24,7 @@ reg  load_new_note1, load_new_note2, load_new_note3;
 	
 	
 	// NOTE: IMPLEMENT COUNT 
-wire [5:0] count1, count2, count3, next_count1, next_count2, next_count3;
+wire [5:0] count1, count2, count3;
 
 /// GOAL - Load New Note into proper Note Number
 always @(*) begin
@@ -136,8 +136,7 @@ wire [17:0] note_harm1, note_harm2, note_harm3;
 create_harmonic ch1(
     .clk(clk),
     .reset(reset),
-	.play_enable(play_enable),
-	.generate_next_sample(generate_next_sample),
+    .note_to_load(note_to_load1),
     .step_size(step_size1),
     .sample_in(sample_out1),
     .harmonic_out(note_harm1)
@@ -146,9 +145,8 @@ create_harmonic ch1(
 create_harmonic ch2(
     .clk(clk),
     .reset(reset),
+    .note_to_load(note_to_load2),
     .step_size(step_size2),
-	.play_enable(play_enable),
-	.generate_next_sample(generate_next_sample),
     .sample_in(sample_out2),
     .harmonic_out(note_harm2)
     );
@@ -156,9 +154,8 @@ create_harmonic ch2(
 create_harmonic ch3(
     .clk(clk),
     .reset(reset),
+    .note_to_load(note_to_load3),
     .step_size(step_size3),
-	.play_enable(play_enable),
-	.generate_next_sample(generate_next_sample),
     .sample_in(sample_out3),
     .harmonic_out(note_harm3)
     );
