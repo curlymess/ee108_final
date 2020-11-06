@@ -162,4 +162,5 @@ create_harmonic ch3(
     
 /// OUTPUT
 assign final_sample = note_harm1 + note_harm2 + note_harm3;
+assign note_done = note_done1 || note_done2 || note_done3;
 endmodule

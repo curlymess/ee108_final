@@ -11,7 +11,7 @@ module note_player(
     output [17:0] sample_out,  	// Our sample output
     output note_done,          	// When we are done with the note this stays high.
     output sample_ready,     	// Tells the codec when we've got a sample
-	output step_size			// set by sine reader
+	output [19:0] step_size	    // set by sine reader
 );
 
 //////////// GENERATE SAMPLE ////////////       
