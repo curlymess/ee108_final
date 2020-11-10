@@ -5,17 +5,15 @@ module note_player(
     input  [5:0] note_to_load,  // The note to play
     input  [5:0] duration,      // The duration of the note to play
     input  load_new_note,       // Tells us when we have a new note to load
-    input  activate,            // Tells us if the counters should counting
-    input  beat,                // This is our 1/48th second beat
+	input [1:0] weight,			// Informs create_harmonic how the weight of each harmony
     input  generate_next_sample,// Tells us when the codec wants a new sample
-    output [17:0] sample_out,  	// Our sample output
-    output note_done,          	// When we are done with the note this stays high.
-    output sample_ready,     	// Tells the codec when we've got a sample
-	output [19:0] step_size	    // set by sine reader
+    output [17:0] harmonic_out, // Our sample output
+    output harmonic_ready,     	// Tells the codec when we've got a sample
 );
 
-//////////// GENERATE SAMPLE ////////////       
+//////////// GET STEP SIZE ////////////       
     wire [5:0] freq_rom_in;
+	wire [19:0] step_size;
 	
     dffre #(.WIDTH(6)) np_freq_reg (
         .clk(clk),
@@ -31,33 +29,17 @@ module note_player(
         .dout(step_size)
     );
 
-    sine_reader np_sine_read(
-        .clk(clk),
-        .reset(reset),
-        .step_size(step_size),
-        .generate_next(play_enable && generate_next_sample),
-        .sample_ready(sample_ready),
-        .sample(sample_out)
+
+//////////// CREATE HARMONCS ////////////     
+create_harmonic ch1(
+    .clk(clk),
+    .reset(reset),
+	.generate_next_sample(generate_next_sample),
+	.play_enable(play_enable),
+    .step_size(step_size),
+	.weight(weight),
+    .harmonic_out(harmonic_out),
+	.sample_ready(harmonic_ready)
     );
-  
-
-    
-//////////// COUNTER ////////////     
-    wire [5:0] count, next_count;
-  
-    dffre #(.WIDTH(6)) duration_counter (
-        .clk(clk),
-        .r(reset),
-        .en(((beat && activate) || load_new_note) && play_enable),
-        .d(next_count),
-        .q(count)
-    );
-    
-    assign next_count = (reset || note_done || load_new_note || count == 6'b0)
-                        ? duration : (count - 6'd1);
-
-
-//////////// REMAINING OUTPUTS ////////////     
-    assign note_done = (count == 6'b0);
-
+	
 endmodule
