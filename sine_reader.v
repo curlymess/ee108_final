@@ -5,7 +5,7 @@ module sine_reader(
     input generate_next,
 
     output sample_ready,
-    output wire [17:0] sample
+    output wire [15:0] sample
 );
 
     //states

@@ -5,19 +5,17 @@ module create_harmonic(
 	input generate_next_sample,
 	input [19:0] step_size,
 	input [1:0] weight,
-	output [17:0] harmonic_out,
+	output signed [17:0] harmonic_out,
 	output sample_ready
 );
-wire [17:0] out1, out2, out3;
-wire [17:0] harm1, harm2, harm3;
-wire [19:0] harm_step2, step_harm3;
+wire signed [15:0] out1; 
+wire signed [17:0] out2, out3;
+wire signed [15:0] harm1, harm2, harm3;
+wire [19:0] harm_step2, harm_step3;
 wire samp_ready1, samp_ready2,samp_ready3;
 
-assign harm_step2 = step_size >> 1; // is it >>>? check documentation
-assign harm_step3 = step_size >> 2;
-
-///////////////// WEIGHT /////////////////
-
+assign harm_step2 = step_size << 1;
+assign harm_step3 = step_size << 2;
 
 //////////// GENERATE SAMPLE ////////////       
     sine_reader harmonic_sine_read1(
@@ -47,10 +45,10 @@ assign harm_step3 = step_size >> 2;
         .sample(harm3)
     );
 	
-//assign harm1 = (harm1 >> 1) + (harm1 >> 3);// 1/2 + 1/8 = 5/8
+///////////////// WEIGHT /////////////////
 assign out1 = harm1;
-assign out2 = ((harm1 >> 1) + (harm1 >> 3)) + ((harm2 >>2) + (harm2 >>3));
-assign out3 = ((harm1 >> 1) + (harm1 >> 3)) + (harm2 >>2) + (harm3 >>3);
+assign out2 = ((harm1 >>> 1) + (harm1 >>> 3)) + ((harm2 >>> 2) + (harm2 >>> 3));
+assign out3 = ((harm1 >>> 1) + (harm1 >>> 3)) + (harm2 >>> 2) + (harm3 >>> 3);
 assign harmonic_out = (weight == 0) ? out1 : (weight == 1) ? out2 : out3;
 assign sample_ready = samp_ready1 && samp_ready2 && samp_ready3;
 endmodule

@@ -1,7 +1,22 @@
 module create_harmonic_tb();
-    reg clk, reset, next_button, play_button;
+    reg clk, reset, play_enable, generate_next_sample;
+    reg [19:0] step_size;
+    reg [1:0] weight;
+    //outputs
+    wire signed [17:0] harmonic_out;
+    wire sample_ready;
 
     //instantiate create_harmonic
+create_harmonic ch_test(
+	.clk(clk),
+	.reset(reset),
+	.play_enable(play_enable),
+	.generate_next_sample(generate_next_sample),
+	.step_size(step_size),
+	.weight(weight),
+	.harmonic_out(harmonic_out),
+	.sample_ready(sample_ready)
+);
 
     // Clock and reset
     initial begin
@@ -13,10 +28,48 @@ module create_harmonic_tb();
     end
 
     // Tests
-    integer delay;
+    integer delay = 50000;
     initial begin
+        reset = 1'b0;
+        #10
+        reset = 1'b1;
+        step_size = 20'd500;
+        play_enable = 1'b1;
+        
+        //// Weight = 0 ////
+        weight = 2'd0;
+        generate_next_sample = 1'b0;
+        repeat(delay)
+        #5
+        generate_next_sample= ~generate_next_sample;
+        #500
+        generate_next_sample = 1'b0;
+        $display("weight = %d, play_enable = %d, step_size = %d, harm_out = %b, sample_ready = %d", weight, play_enable, step_size, harmonic_out, sample_ready);
+        #400
+ 
+         //// Weight = 1 ////
+        weight = 2'd1;
+        generate_next_sample = 1'b0;
+        repeat(delay)
+        #5
+        generate_next_sample= ~generate_next_sample;
+        #500
+        generate_next_sample = 1'b0;
+        $display("weight = %d, play_enable = %d, step_size = %d, harm_out = %b, sample_ready = %d", weight, play_enable, step_size, harmonic_out, sample_ready);
+        #400    
 
-
+        //// Weight = 2 ////
+        weight = 2'd2;
+        generate_next_sample = 1'b0;
+        repeat(delay)
+        #5
+        generate_next_sample= ~generate_next_sample;
+        #500
+        generate_next_sample = 1'b0;
+        $display("weight = %d, play_enable = %d, step_size = %d, harm_out = %b, sample_ready = %d", weight, play_enable, step_size, harmonic_out, sample_ready);
+        #400
+           
+        $stop;
     end
 
 
