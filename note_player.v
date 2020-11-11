@@ -8,7 +8,7 @@ module note_player(
 	input [1:0] weight,			// Informs create_harmonic how the weight of each harmony
     input  generate_next_sample,// Tells us when the codec wants a new sample
     output [17:0] harmonic_out, // Our sample output
-    output harmonic_ready,     	// Tells the codec when we've got a sample
+    output harmonic_ready     	// Tells the codec when we've got a sample
 );
 
 //////////// GET STEP SIZE ////////////       
