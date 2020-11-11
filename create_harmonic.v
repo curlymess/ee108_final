@@ -16,7 +16,7 @@ wire samp_ready1, samp_ready2,samp_ready3;
 assign harm_step2 = step_size >> 1; // is it >>>? check documentation
 assign harm_step3 = step_size >> 2;
 
-//////////// WEIGHT ////////////
+///////////////// WEIGHT /////////////////
 
 
 //////////// GENERATE SAMPLE ////////////       
