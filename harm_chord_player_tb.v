@@ -1,7 +1,8 @@
 module harm_chord_player_tb();
 
 // Inputs
-reg clk, reset, play_enable, load_new_note, activate, beat, generate_next_sample;
+reg clk, reset, play_enable, load_new_note, activate, generate_next_sample;
+wire beat;
 reg [1:0] weight;
 reg [5:0] note_to_load, duration;
 //Outputs
@@ -25,6 +26,14 @@ harm_chord_player hcp1(
     .sample_ready(sample_ready)
 );
 
+beat_generator #(.WIDTH(17), .STOP(5)) beat_generator2(
+    .clk(clk),
+    .reset(reset),
+    .en(1'b1),
+    .beat(beat)
+);
+
+
     // Clock and reset
     initial begin
         clk = 1'b0;
@@ -42,7 +51,7 @@ harm_chord_player hcp1(
         reset = 1'b1;
         
         play_enable = 1'b1;
-        beat = 1'b1;
+
         weight = 2'd2;
         generate_next_sample = 1'b1; // flip on and off??
         activate = 1'b0; // off until load all the notes
