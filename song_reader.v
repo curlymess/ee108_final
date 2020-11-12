@@ -23,7 +23,7 @@ module song_reader(
     output wire [5:0] note,
     output wire [5:0] duration,
     output wire new_note,
-    output wire advance,
+    output wire activate,
     output wire [2:0] parameters
 );
 
@@ -73,7 +73,9 @@ module song_reader(
             next_count = duration2;
         end
     end
-    //assign advance = (count != 0);
+    assign activate = (count == 1) ? 1:0;
+    
+    
 
     always @(*) begin
         case (state)

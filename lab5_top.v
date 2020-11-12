@@ -117,7 +117,7 @@ module lab5_top(
 //  ****************************************************************************
 //       
     wire new_frame;
-    wire [15:0] codec_sample, flopped_sample;
+    wire [17:0] codec_sample, flopped_sample;
     wire new_sample, flopped_new_sample;
     music_player #(.BEAT_COUNT(BEAT_COUNT)) music_player(
         .clk(clk_100),

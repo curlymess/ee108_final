@@ -28,6 +28,7 @@ module music_player(
     // The BEAT_COUNT is parameterized so you can reduce this in simulation.
     // If you reduce this to 100 your simulation will be 10x faster.
     parameter BEAT_COUNT = 1000;
+    wire [1:0] weight = 0;
 
 
 //
@@ -62,52 +63,48 @@ module music_player(
     wire [5:0] note_to_play;
     wire [5:0] duration_for_note;
     wire [2:0] parameters;
-    wire new_note, advance;
-    wire note_done1, note_done2, note_done2;
+    wire new_note, activate;
+    wire note_done;
     song_reader song_reader(
         .clk(clk),
         .reset(reset | reset_player),
         .play(play),
         .song(current_song),
-        .note_done1(note_done1),
-        .note_done2(note_done2),
-        .note_done3(note_done3),
+        .note_done(note_done),
         .song_done(song_done),
         .note(note_to_play),
         .duration(duration_for_note),
         .new_note(new_note),
-        .advance(advance),
+        .activate(activate),
         .parameters(parameters)
     );
 
 //   
 //  ****************************************************************************
-//      Note Player
+//      Harmonic Chord Player
 //  ****************************************************************************
 //  
-    wire beat;
+  
+    //wire [1:0] weight;
     wire generate_next_sample;
-    wire [17:0] note_sample1, note_sample2, note_sample3;
-    wire sample_ready1, sample_ready2, sample_ready3;
-    note_player note_player(
+    wire sample_ready, beat;
+    wire [17:0] final_sample;
+    
+
+    harm_chord_player harmonic_chord_player(
         .clk(clk),
         .reset(reset),
         .play_enable(play),
-        .note_to_load(note_to_play),
-        .duration_to_load(duration_for_note),
-        .load_new_note(new_note),
-        .activate(activate),
-        .beat(beat),
-        .generate_next_sample(generate_next_sample),
-        .note_done1(note_done1),
-        .note_done2(note_done2),
-        .note_done3(note_done3),
-        .sample_out1(note_sample1),
-        .sample_out2(note_sample2),
-        .sample_out3(note_sample3),
-        .sample_ready1(sample_ready1),
-        .sample_ready2(sample_ready2),
-        .sample_ready3(sample_ready3)
+        .note_to_load(note_to_play) ,        // When high we play, when low we don't.
+        .duration(duration_for_note),      // The duration of the note to play
+        .load_new_note(new_note),       // Tells us when we have a new note to load
+        .activate(activate),            // Tells us if the counters should counting
+        .beat(beat),                // This is our 1/48th second beat
+        .generate_next_sample(generate_next_sample),// Tells us when the codec wants a new sample
+        .weight(weight),
+        .final_sample(final_sample),  // Our sample output - note1,2,3 and harmonics together!
+        .note_done(note_done),          // When we are done with a note this stays high - combo of note_done1,2,3
+        .sample_ready(sample_ready)  
     );
       
 //   
@@ -134,8 +131,8 @@ module music_player(
     codec_conditioner codec_conditioner(
         .clk(clk),
         .reset(reset),
-        .new_sample_in(note_sample),
-        .latch_new_sample_in(note_sample_ready),
+        .new_sample_in(final_sample),
+        .latch_new_sample_in(sample_ready),
         .generate_next_sample(generate_next_sample),
         .new_frame(new_frame),
         .valid_sample(sample_out)

@@ -1,7 +1,7 @@
 module music_player_tb();
     reg clk, reset, next_button, play_button;
     wire new_frame;
-    wire [15:0] sample;
+    wire [17:0] sample;
 
     music_player #(.BEAT_COUNT(500)) music_player(
         .clk(clk),
