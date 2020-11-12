@@ -1,11 +1,12 @@
 module song_reader_tb();
-
-    reg clk, reset, play, note_done1, note_done2, note_done3;
+    // inputs
+    reg clk, reset, play, note_done;
     reg [1:0] song;
+    // outputs
     wire [2:0] parameters;
     wire [5:0] note;
     wire [5:0] duration;
-    wire song_done, new_note, advance;
+    wire song_done, new_note, activate;
 
     song_reader dut(
         .clk(clk),
@@ -16,10 +17,8 @@ module song_reader_tb();
         .note(note),
         .duration(duration),
         .new_note(new_note),
-        .note_done1(note_done1),
-        .note_done2(note_done2),
-        .note_done3(note_done3),
-        .advance(advance),
+        .note_done(note_done),
+        .activate(activate),
         .parameters(parameters)
     );    
 
@@ -34,35 +33,34 @@ module song_reader_tb();
 
     initial begin
     reset = 1'b1;
-    #15
-    
+    #10
+    reset     = 1'b0;
+
     //ADJUST NOTE DONE
     // Play song 0
-//    reset     = 1'b0;
-  
-//    song      = 2'd0;
-//    play      = 1'b1; // press play once just to start
-//    note_done = 1'b1;
+    song      = 2'd0;
+    play      = 1'b1; // press play once just to start
+    note_done = 1'b1;
     
-//    //Check when note_done is not 0; 
-//    //Should stay in state 3
-//    #100
-//    note_done = 0;
-//    #100
-//    note_done =1;
-//    #50
+    //Check when note_done is not 0; 
+    //Should stay in state 3
+    #100
+    note_done = 0;
+    #100
+    note_done =1;
+    #50
     
-    //Check when play not high
-//    #100
-//    play = 0;
-//    #100
-//    play = 1;
+    // Check when play not high
+    #100
+    play = 0;
+    #100
+    play = 1;
     
     //Check Reset
-//    #20
-//    reset = 1;
-//    #10
-//    reset = 0;
+    #20
+    reset = 1;
+    #10
+    reset = 0;
    
     
  

@@ -52,6 +52,9 @@ harm_chord_player hcp1(
         weight = 2'd2;
         activate = 1'b0; // off until load all the notes
         #30
+
+/////////////////////// 3 NOTE CHORD ///////////////////////
+///////// Same Duration
         // Chord - load note 1, same durations
         duration = 6'd4;
         note_to_load = 6'd36;
@@ -72,15 +75,61 @@ harm_chord_player hcp1(
         duration = 6'd4;
         note_to_load = 6'd26;
         load_new_note = 1'b1;
-        #20
+        #10
         load_new_note = 1'b0;
         #10       
         
         // play chord, same durations
         activate = 1'b1;
-        generate_next_sample = 1'b1; // flip on and off??
+        generate_next_sample = 1'b1;
         #5000
-        //activate = 1'b0;
+        activate = 1'b0;
+        #30
+        
+///////// Diff Duration
+        // Chord - load note 1, diff durations
+        duration = 6'd20;
+        note_to_load = 6'd20;
+        load_new_note = 1'b1;
+        #10
+        load_new_note = 1'b0;
+        #10
+        
+        // Chord - load note 2, diff durations
+        duration = 6'd8;
+        note_to_load = 6'd26;
+        load_new_note = 1'b1;
+        #10
+        load_new_note = 1'b0;
+        #10       
+        
+        // Chord - load note 3, diff durations
+        duration = 6'd4;
+        note_to_load = 6'd30;
+        load_new_note = 1'b1;
+        #20
+        load_new_note = 1'b0;
+        #10       
+        
+        // play chord, diff durations
+        activate = 1'b1;
+        generate_next_sample = 1'b1;
+        #300
+        // load new note in note 3
+        activate = 1'b0;
+        #10
+        duration = 6'd6;
+        note_to_load = 6'd32;
+        load_new_note = 1'b1;
+        #30
+        activate = 1'b1;
+        load_new_note = 1'b0;
+        #10
+        #4000
+        activate = 1'b0;
+        #30
+        
+        
     
         $stop;
     end
