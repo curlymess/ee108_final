@@ -50,50 +50,8 @@ wire overflow;
     .d(next),
     .q(state)
  );
-    
-//    //Counter
-//    wire [5:0] duration2;
-//    wire  [5:0] next_count;
-//    wire [5:0] count;
-//    dffr#(6) SR_counter (
-//        .clk(clk),
-//        .r(reset),
-//        .d(next_count),
-//        .q(count)
-//    );
-//dffre #(.WIDTH(6)) SR_counter (
-//   .clk(clk),
-//   .r(reset),
-//   .en(beat && play),
-//   .d(next_count),
-//   .q(count)
-//);
-//assign duration = rom_out[8:3];
-//assign duration2 = rom_out[15] ? duration : 6'b000000;
-//assign next_count = (count != 6'd0) ? count - 1 : duration2;
-    
+  
 song_rom rom(.clk(clk), .addr(rom_addr), .dout(rom_out));
-    
- 
-//    always @(*) begin
-//        if ( count != 6'd0 ) begin
-//            next_count = count - 6'd1;
-//        end else begin 
-//            next_count = duration2;
-//        end
-//    end
-//    wire [1:0] SR_next_count2;
-//    wire [1:0] SR_count2;
-//dffre#(2) SR_counter2 (
-//    .clk(clk),
-//    .r(reset),
-//    .en(state ==3'b010),
-//    .d(SR_next_count2 ),
-//    .q(SR_count2)
-//);
-//assign SR_next_count2 = (SR_count2 == 2'd2) ? 0 : (SR_count2 + 2'd1);
-    
-//assign activate = (count !=0) ? 1:0;
     
 always @(*) begin
     case (state)

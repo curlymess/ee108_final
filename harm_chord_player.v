@@ -86,7 +86,7 @@ assign next_dur =  duration4;
 
 /// GOAL - Load New Note into proper Note Number
 always @(*) begin
-    if ( activate && load_new_note ) begin // is activate here one pulse?
+    if ( activate && load_new_note ) begin
         load_new_note1 = 1'b0;
         load_new_note2 = 1'b0;
         load_new_note3 = 1'b0;
