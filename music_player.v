@@ -69,6 +69,7 @@ module music_player(
         .clk(clk),
         .reset(reset | reset_player),
         .play(play),
+        .beat(beat),
         .song(current_song),
         .note_done(note_done),
         .song_done(song_done),
