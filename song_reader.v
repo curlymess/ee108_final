@@ -93,7 +93,7 @@ dffre#(2) SR_counter2 (
 );
 assign SR_next_count2 = (SR_count2 == 2'd2) ? 0 : (SR_count2 + 2'd1);
     
-assign activate = (count !=0) ? 1:0;
+//assign activate = (count !=0) ? 1:0;
     
     
 
@@ -103,7 +103,7 @@ assign activate = (count !=0) ? 1:0;
             `RETRIEVE_NOTE:     next = play ? `NEW_NOTE_READY : `PAUSED;
             `NEW_NOTE_READY:    next = play ? `WAIT: `PAUSED;
             `WAIT:              next = !play ? `PAUSED
-                                             : (note_done) ||(SR_count2 == 2) ? `INCREMENT_ADDRESS
+                                             : (note_done) ? `INCREMENT_ADDRESS
                                                           : `WAIT;
             `INCREMENT_ADDRESS: next = (play && ~overflow) ? `RETRIEVE_NOTE
                                                            : `PAUSED;
@@ -118,6 +118,7 @@ assign activate = (count !=0) ? 1:0;
     assign new_note = (state == `NEW_NOTE_READY);
     assign note = rom_out[14:9];
     assign duration = rom_out[8:3];
+    assign activate = rom_out[15];
     //assign {note, duration} = rom_out;
     assign song_done = overflow;
     
