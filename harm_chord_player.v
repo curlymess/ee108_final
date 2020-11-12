@@ -22,7 +22,7 @@ reg  load_new_note1, load_new_note2, load_new_note3, load_new_note4;
 wire note_done1, note_done2, note_done3, note_done4;
 	
 //////////// COUNTERS ////////////    
-wire [5:0] count1, count2, count3,count4, next_count1, next_count2, next_count3,next_count4;
+wire [5:0] count1, count2, count3, count4, next_count1, next_count2, next_count3, next_count4;
  
 dffre #(.WIDTH(6)) duration_counter1 (
    .clk(clk),
@@ -69,9 +69,6 @@ assign next_count4 = load_new_note ? duration: (count4!= 0) ? (count4-1) : 0;
 assign activate2 = (count4 != 0) ? 1:0;
 
 
-
-
-
 assign note_done1 = (count1 == 6'd0);
 assign note_done2 = (count2 == 6'd0);
 assign note_done3 = (count3 == 6'd0);
@@ -89,7 +86,22 @@ assign next_dur =  duration4;
 
 /// GOAL - Load New Note into proper Note Number
 always @(*) begin
-    if (count1 == 0 && load_new_note) begin
+    if ( activate && load_new_note ) begin // is activate here one pulse?
+        load_new_note1 = 1'b0;
+        load_new_note2 = 1'b0;
+        load_new_note3 = 1'b0;
+        load_new_note4 = load_new_note;
+
+        note_to_load1 = 6'b0;
+        note_to_load2 = 6'b0;
+        note_to_load3 = 6'b0;
+        note_to_load4 = note_to_load;
+      
+        duration1 = 6'b0;
+        duration2 = 6'b0;
+        duration3 = 6'b0;
+        duration4 = duration;    
+    end else if (count1 == 0 && load_new_note) begin
         load_new_note1 = load_new_note;
         load_new_note2 = 1'b0;
         load_new_note3 = 1'b0;
@@ -136,22 +148,7 @@ always @(*) begin
         duration2 = 6'b0;
         duration3 = duration;
         duration4 = 6'b0;
-    end else if (count4 == 0 && load_new_note) begin
-        load_new_note1 = 1'b0;
-        load_new_note2 = 1'b0;
-        load_new_note3 = 1'b0;
-        load_new_note4 = load_new_note;
-
-        note_to_load1 = 6'b0;
-        note_to_load2 = 6'b0;
-        note_to_load3 = 6'b0;
-        note_to_load4 = note_to_load;
-      
-        duration1 = 6'b0;
-        duration2 = 6'b0;
-        duration3 = 6'b0;
-        duration4 = duration;
-        
+       
     end else begin 
         load_new_note1 = 1'b0;
         load_new_note2 = 1'b0;
