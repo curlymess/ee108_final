@@ -65,37 +65,37 @@ module song_reader_tb();
     
  
     #1600    
-    //note_done = 0;
-    //#30
+    note_done = 0;
+    #30
     
     // NOTE ADJUST NOTE DONE
-//    // Play song 1
-//    reset     = 1'b0;
-//    song      = 2'd1;
-//    play      = 1'b1; // press play once just to start
-//    note_done = 1'b1;
-//    #1300   
-//    note_done = 0;
-//    play      = 1'b0;
-//    #30
+    // Play song 1
+    reset     = 1'b0;
+    song      = 2'd1;
+    play      = 1'b1; // press play once just to start
+    note_done = 1'b1;
+    #1300   
+    note_done = 0;
+    play      = 1'b0;
+    #30
     
-//    // Play song 2
-//    song      = 2'd2;
-//    play      = 1'b1; // press play once just to start
-//    note_done = 1'b1;
-//    #10
-//    #1300    
-//    note_done = 0;
-//    play      = 0;
-//    #30
+    // Play song 2
+    song      = 2'd2;
+    play      = 1'b1; // press play once just to start
+    note_done = 1'b1;
+    #10
+    #1300    
+    note_done = 0;
+    play      = 0;
+    #30
     
-//    // Play song 3
-//    song      = 2'd3;
-//    play      = 1'b1; // press play once just to start
-//    note_done = 1'b1;
-//    #1300   
-//    note_done = 0;
-//    play      = 1'b0;
+    // Play song 3
+    song      = 2'd3;
+    play      = 1'b1; // press play once just to start
+    note_done = 1'b1;
+    #1300   
+    note_done = 0;
+    play      = 1'b0;
 
     #30
     
