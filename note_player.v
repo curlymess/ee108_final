@@ -29,7 +29,8 @@ module note_player(
         .dout(step_size)
     );
 
-
+wire [17:0] harmonic_out_temp;
+wire harmonic_ready_temp;
 //////////// CREATE HARMONCS ////////////     
 create_harmonic ch1(
     .clk(clk),
@@ -38,8 +39,23 @@ create_harmonic ch1(
 	.play_enable(play_enable),
     .step_size(step_size),
 	.weight(weight),
-    .harmonic_out(harmonic_out),
-	.sample_ready(harmonic_ready)
+    .harmonic_out(harmonic_out_temp),
+	.sample_ready(harmonic_ready_temp)
     );
+
+dffr #(.WIDTH(18)) out_delay (
+   .clk(clk),
+   .r(reset),
+   .d(harmonic_out_temp),
+   .q(harmonic_out)
+);
+
+dffr #(.WIDTH(1)) ready_delay (
+   .clk(clk),
+   .r(reset),
+   .d(harmonic_ready_temp),
+   .q(harmonic_ready)
+);
 	
+
 endmodule
