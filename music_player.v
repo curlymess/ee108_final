@@ -88,7 +88,7 @@ module music_player(
   
     //wire [1:0] weight;
     wire generate_next_sample;
-    wire sample_ready, beat;
+    wire sample_ready;
     wire [17:0] final_sample;
     
 
