@@ -78,7 +78,9 @@ end
 
 	//state specific assignments
 	assign next_state = next_state_temp; //next_state always holds the value of the temporary next_state register
-	assign write_sample_temp = (state == `ACTIVE) ? new_sample_in[15:8] : 8'b00000000; 
+	//assign write_sample_temp = (state == `ACTIVE) ? new_sample_in[15:8] : 8'b00000000; 
+    assign write_sample_temp = (state == `ACTIVE) ? new_sample_in[17:10] : 8'b00000000; 
+
 	assign write_enable = (state  == `ACTIVE);
 	assign write_sample = write_sample_temp + 8'b10000000;
 

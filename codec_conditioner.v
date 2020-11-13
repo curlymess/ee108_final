@@ -43,13 +43,15 @@ module codec_conditioner(
 
    // Generate a one-pulse signal when new_frame goes high.
    wire previous_new_frame;
-   dffre #(1) new_frame_state(
+   dffre #(1) new_frame_state_temp(
       .clk(clk),
       .r(reset),
       .en(1'b1),
       .d(new_frame),
       .q(previous_new_frame)
    );
+
+
    assign generate_next_sample = new_frame && ~previous_new_frame;
 
    // The next sample we are storing so we can output it immediately on the next

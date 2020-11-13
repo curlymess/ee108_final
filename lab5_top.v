@@ -160,7 +160,7 @@ module lab5_top(
         .AC_MCLK(AC_MCLK),
         .AC_SCK(AC_SCK),
         .AC_SDA(AC_SDA),
-        .hphone_l({codec_sample, 8'h00}),
+        .hphone_l({codec_sample, 6'h00}),
         .hphone_r(hphone_r),
         .line_in_l(line_in_l),
         .line_in_r(line_in_r),
