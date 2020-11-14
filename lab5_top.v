@@ -50,7 +50,7 @@ module lab5_top(
 );  
 
     wire reset, play_button, next_button, weight_button;
-    assign {reset, play_button, next_button} = btn;
+    assign {weight_button, reset, play_button, next_button} = btn;
 
     // Clock converter
     wire clk_100, display_clk, serial_clk;
