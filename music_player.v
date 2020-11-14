@@ -14,7 +14,7 @@ module music_player(
     // Our debounced and one-pulsed button inputs.
     input play_button,
     input next_button,
-    input weight_button,
+    input [1:0] weight,
 
     // The raw new_frame signal from the ac97_if codec.
     input new_frame,
@@ -29,20 +29,6 @@ module music_player(
     // The BEAT_COUNT is parameterized so you can reduce this in simulation.
     // If you reduce this to 100 your simulation will be 10x faster.
     parameter BEAT_COUNT = 1000;
-    wire [1:0] weight;
-
-
-
-    iie iie(
-        .clk(clk),
-        .reset(reset),
-        .weight_button(weight_button),
-        .weight(weight)
-    );
-
-
-
-
 
 //
 //  ****************************************************************************
