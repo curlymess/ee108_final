@@ -1,5 +1,6 @@
 module music_player_tb();
-    reg clk, reset, next_button, play_button,weight_button;
+    reg clk, reset, next_button, play_button;
+    reg [1:0] weight_button;
     wire new_frame;
     wire [17:0] sample;
 
@@ -8,7 +9,7 @@ module music_player_tb();
         .reset(reset),
         .next_button(next_button),
         .play_button(play_button),
-        .weight_button(weight_button),
+        .weight(weight_button),
         .new_frame(new_frame),
         .sample_out(sample)
     );
@@ -79,12 +80,11 @@ module music_player_tb();
         @(negedge clk);
         reset = 1'b0;
         
+        weight_button = 2'd1;
         @(negedge clk);
         play_button = 1'b1;
-        weight_button = 1'b1;
         @(negedge clk);
         play_button = 1'b0;
-        weight_button = 1'b0;
         
               
         repeat (delay) begin
@@ -95,17 +95,18 @@ module music_player_tb();
         reset = 1'b1;
         @(negedge clk);
         reset = 1'b0;
-        
+        weight_button = 2'd1;
+
         @(negedge clk);
         play_button = 1'b1;
-        weight_button = 1'b1;
+        //weight_button = 1'b1;
         @(negedge clk);
         play_button = 1'b0;
-        weight_button = 1'b0; 
+        //weight_button = 1'b0; 
         @(negedge clk);
-        weight_button = 1'b1;
+        //weight_button = 1'b1;
         @(negedge clk);
-        weight_button = 1'b0;
+        //weight_button = 1'b0;
         
         repeat (delay) begin
             @(negedge clk);
