@@ -1,9 +1,7 @@
 module iie(
     input clk,
     input reset,
-    input up_button,
-    input down_button,
-	input switch,
+    input weight_button,
     output [1:0] weight
 );
 
@@ -15,25 +13,20 @@ module iie(
 `define WEIGHT2         	2'b10
 
 reg [1:0] next_weight;
-    dffre #(.WIDTH(2)) weight_dffre (
+    dffr #(.WIDTH(2)) weight_dffre (
         .clk(clk),
         .r(reset),
-        .en(switch),
         .d(next_weight),
         .q(weight)
     );
 
 always @(*) begin
-	if(switch) begin
-		case (weight)
-		   `DEFAULT_WEIGHT: next_weight = up_button ? `WEIGHT1 : `DEFAULT_WEIGHT;
-		   `WEIGHT1:        next_weight = up_button ? `WEIGHT2 : (down_button ? `DEFAULT_WEIGHT : `WEIGHT1);
-		   `WEIGHT2:        next_weight = down_button ? `WEIGHT1 : `WEIGHT2;
-		   default:         next_weight = `DEFAULT_WEIGHT;
-		endcase
-	end else begin
-		next_weight = weight;
-	end
+    case (weight)
+       `DEFAULT_WEIGHT: next_weight = weight_button ? `WEIGHT1 : `DEFAULT_WEIGHT;
+       `WEIGHT1:        next_weight = weight_button ? `WEIGHT2 : `WEIGHT1;
+       `WEIGHT2:        next_weight = weight_button ? `DEFAULT_WEIGHT : `WEIGHT2;
+       default:         next_weight = `DEFAULT_WEIGHT;
+    endcase
 end
 
 endmodule

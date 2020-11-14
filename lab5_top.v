@@ -49,7 +49,7 @@ module lab5_top(
   
 );  
 
-    wire reset, play_button, next_button;
+    wire reset, play_button, next_button, weight_button;
     assign {reset, play_button, next_button} = btn;
 
     // Clock converter
@@ -111,6 +111,13 @@ module lab5_top(
         .out(next)
     );
        
+    wire weight_b;
+    button_press_unit #(.WIDTH(BPU_WIDTH)) weight_button_press_unit(
+        .clk(clk_100),
+        .reset(reset),
+        .in(weight_button),
+        .out(weight_b)
+    );
 //   
 //  ****************************************************************************
 //      The music player
@@ -124,6 +131,7 @@ module lab5_top(
         .reset(reset),
         .play_button(play),
         .next_button(next),
+        .weight_button(weight_b),
         .new_frame(new_frame), 
         .sample_out(codec_sample),
         .new_sample_generated(new_sample)

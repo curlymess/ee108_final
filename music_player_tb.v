@@ -1,5 +1,5 @@
 module music_player_tb();
-    reg clk, reset, next_button, play_button;
+    reg clk, reset, next_button, play_button,weight_button;
     wire new_frame;
     wire [17:0] sample;
 
@@ -8,6 +8,7 @@ module music_player_tb();
         .reset(reset),
         .next_button(next_button),
         .play_button(play_button),
+        .weight_button(weight_button),
         .new_frame(new_frame),
         .sample_out(sample)
     );
@@ -49,6 +50,7 @@ module music_player_tb();
         delay = 3000000;
         play_button = 1'b0;
         next_button = 1'b0;
+        weight_button = 1'b0;
         @(negedge reset);
         @(negedge clk);
 
@@ -60,19 +62,59 @@ module music_player_tb();
         $display("Starting playing song 0...");
         @(negedge clk);
         play_button = 1'b1;
+        //weight_button = 1'b1;
+
         @(negedge clk);
         play_button = 1'b0;
-        
+        //weight_button = 1'b0;
+
         repeat (delay) begin
             @(negedge clk);
         end
         
         
         // Reset
-//        $display("Reset song 0...");
-//        reset = 1'b1;
-//        @(negedge clk);
-//        reset = 1'b0;
+        $display("Reset song 0...");
+        reset = 1'b1;
+        @(negedge clk);
+        reset = 1'b0;
+        
+        @(negedge clk);
+        play_button = 1'b1;
+        weight_button = 1'b1;
+        @(negedge clk);
+        play_button = 1'b0;
+        weight_button = 1'b0;
+        
+              
+        repeat (delay) begin
+            @(negedge clk);
+        end
+
+        //case3
+        reset = 1'b1;
+        @(negedge clk);
+        reset = 1'b0;
+        
+        @(negedge clk);
+        play_button = 1'b1;
+        weight_button = 1'b1;
+        @(negedge clk);
+        play_button = 1'b0;
+        weight_button = 1'b0; 
+        @(negedge clk);
+        weight_button = 1'b1;
+        @(negedge clk);
+        weight_button = 1'b0;
+        
+        repeat (delay) begin
+            @(negedge clk);
+        end
+        
+        
+        
+        
+        
         
 //        // Start playing
 //        $display("Starting playing song 0 again...");
