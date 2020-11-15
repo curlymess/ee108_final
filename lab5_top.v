@@ -29,7 +29,7 @@ module lab5_top(
     output wire [2:0] leds_rgb_0,
     output wire [2:0] leds_rgb_1,
 
-    input [2:0] btn,
+    input [3:0] btn,
 
     /* 
     //VGA OUTPUT 
@@ -146,7 +146,7 @@ module lab5_top(
         .reset(reset),
         .play_button(play),
         .next_button(next),
-        .weight(2'd2),
+        .weight(weight),
         .new_frame(new_frame), 
         .sample_out(codec_sample),
         .new_sample_generated(new_sample)
@@ -238,7 +238,7 @@ module lab5_top(
         .x(x[10:0]),
         .y(y[9:0]),
         //.valid(valid),
-        .weight(2'd2),
+        .weight(weight),
 		.valid(vde),
 		.vsync(vsync),
 		.r(r_1),
