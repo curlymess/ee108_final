@@ -85,9 +85,9 @@ assign make_white = (moving_up) ?
 					((prev_read_value_adjusted <= translated_y) & (read_value_adjusted >= translated_y));
 
 //// TCGROM ADDRESS ////
-wire [7:0] data;
-reg [8:0] addr;
-reg [12:0] letter_start; // for use in pixel color setting
+wire [7:0]  data;
+reg  [8:0]  addr;
+reg  [12:0] letter_start; // for use in pixel color setting
 always @(*) begin
     if(valid && x <= `END_WEIGHTX && x >= `START_WEIGHTX && y <= `END_WEIGHTY && y >= `START_WEIGHTY) begin
         if ( x >= `T_X) begin
@@ -125,6 +125,7 @@ always @(*) begin
         end   
     end else begin
         addr = 9'd0;
+        letter_start = 13'd0;
     end
 end
 tcgrom tcg(.addr(addr), .data(data));
