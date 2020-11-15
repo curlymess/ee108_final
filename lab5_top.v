@@ -146,7 +146,7 @@ module lab5_top(
         .reset(reset),
         .play_button(play),
         .next_button(next),
-        .weight(weight),
+        .weight(2'd2),
         .new_frame(new_frame), 
         .sample_out(codec_sample),
         .new_sample_generated(new_sample)
@@ -238,7 +238,7 @@ module lab5_top(
         .x(x[10:0]),
         .y(y[9:0]),
         //.valid(valid),
-        .weight(weight),
+        .weight(2'd2),
 		.valid(vde),
 		.vsync(vsync),
 		.r(r_1),
