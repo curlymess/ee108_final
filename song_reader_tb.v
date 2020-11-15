@@ -1,6 +1,6 @@
 module song_reader_tb();
     // inputs
-    reg clk, reset, play, note_done;
+    reg clk, reset, play, note_done, ff_switch0, r_switch1;
     reg [1:0] song;
     // outputs
     wire [2:0] parameters;
@@ -15,6 +15,8 @@ module song_reader_tb();
         .song(song),
         .song_done(song_done),
         .note(note),
+        .ff_switch0(ff_switch0),
+        .r_switch1(r_switch1),
         .duration(duration),
         .new_note(new_note),
         .note_done(note_done),
@@ -99,6 +101,34 @@ module song_reader_tb();
 
     #30
     
+    // Fast Forward
+    // Play song 0 - reg
+    song       = 2'd0;
+    play       = 1'b1; // press play once just to start
+    note_done  = 1'b1;
+    ff_switch0 = 1'b0;
+    r_switch1  = 1'b0; 
+    #1300
+    play = 1'b0;
+    #20
+    // Play song 0 - fast - ff
+    song      = 2'd0;
+    play      = 1'b1; // press play once just to start
+    note_done = 1'b1;
+    ff_switch0 = 1'b1;
+    r_switch1  = 1'b0; 
+    #1300
+    play = 1'b0;
+    #20
+    // Play song 0 - fast - r
+    song      = 2'd0;
+    play      = 1'b1; // press play once just to start
+    note_done = 1'b1;
+    ff_switch0 = 1'b0;
+    r_switch1  = 1'b1; 
+    #1300    
+    play = 1'b0;
+    #20
     $stop;
     end
 endmodule
