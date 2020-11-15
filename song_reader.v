@@ -8,7 +8,7 @@
 `define SWIDTH1 3
 `define PAUSED             3'b000
 `define WAIT               3'b001
-`define INCREMENT_ADDRESS  3'b010
+`define CHANGE_ADDRESS     3'b010
 `define RETRIEVE_NOTE      3'b011
 `define NEW_NOTE_READY     3'b100
 
@@ -54,30 +54,35 @@ wire overflow;
  );
   
 song_rom rom(.clk(clk), .addr(rom_addr), .dout(rom_out));
-    
+
 always @(*) begin
     case (state)
        `PAUSED:            next = play ? `RETRIEVE_NOTE : `PAUSED;
        `RETRIEVE_NOTE:     next = play ? `NEW_NOTE_READY : `PAUSED;
        `NEW_NOTE_READY:    next = play ? `WAIT: `PAUSED;
        `WAIT:              next = !play ? `PAUSED
-                                  : (note_done) ? `INCREMENT_ADDRESS
+                                  : (note_done) ? `CHANGE_ADDRESS
                                                 : `WAIT;
-       `INCREMENT_ADDRESS: next = (play && ~overflow) ? `RETRIEVE_NOTE
-                                                : `PAUSED;
+       `CHANGE_ADDRESS: begin
+            if(r_switch1) begin
+                next = (play && curr_note_num == 5'd0) ? `PAUSED : `RETRIEVE_NOTE;
+            end else begin
+                next = (play && ~overflow) ? `RETRIEVE_NOTE : `PAUSED;
+            end
+        end
        default:            next = `PAUSED;
     endcase
 end
     
 assign {overflow, next_note_num} =
-       (state == `INCREMENT_ADDRESS) ? {1'b0, curr_note_num} + 1
+       (state == `CHANGE_ADDRESS) ? (r_switch1 ? ({1'b0, curr_note_num} - 1) : ({1'b0, curr_note_num} + 1))
                                      : {1'b0, curr_note_num};
 wire [5:0] duration_temp = rom_out[8:3];
 
 /////// Outputs ///////                                     
 assign new_note = (state == `NEW_NOTE_READY);
 assign note = rom_out[14:9];
-assign duration = ff_switch0 || r_switch1 ? duration_temp >> 1 : duration_temp; // half the duration if ff or rewind
+assign duration = (ff_switch0 || r_switch1) ? duration_temp >> 1 : duration_temp; // half the duration if ff or rewind
 assign activate = rom_out[15];
 assign song_done = overflow;
 

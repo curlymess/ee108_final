@@ -35,6 +35,8 @@ module song_reader_tb();
 
     initial begin
     reset = 1'b1;
+    ff_switch0 = 1'b0;
+    r_switch1  = 1'b0;
     #10
     reset     = 1'b0;
 
@@ -113,16 +115,14 @@ module song_reader_tb();
     #20
     // Play song 0 - fast - ff
     song      = 2'd0;
-    play      = 1'b1; // press play once just to start
+    play      = 1'b1; 
     note_done = 1'b1;
     ff_switch0 = 1'b1;
     r_switch1  = 1'b0; 
     #1300
-    play = 1'b0;
-    #20
+    
     // Play song 0 - fast - r
     song      = 2'd0;
-    play      = 1'b1; // press play once just to start
     note_done = 1'b1;
     ff_switch0 = 1'b0;
     r_switch1  = 1'b1; 
