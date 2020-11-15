@@ -41,7 +41,6 @@ module wave_display_top(
         .addrb(read_address),
         .doutb(read_sample)
     );
- 
     wire valid_pixel;
     wire [7:0] wd_r, wd_g, wd_b;
     wave_display wd(

@@ -111,13 +111,28 @@ module lab5_top(
         .out(next)
     );
        
-    wire weight_b = 2'd2;
-//    button_press_unit #(.WIDTH(BPU_WIDTH)) weight_button_press_unit(
-//        .clk(clk_100),
-//        .reset(reset),
-//        .in(weight_button),
-//        .out(weight_b)
-//    );
+    wire weight_b;
+    button_press_unit #(.WIDTH(BPU_WIDTH)) weight_button_press_unit(
+        .clk(clk_100),
+        .reset(reset),
+        .in(weight_button),
+        .out(weight_b)
+    );
+   
+    
+//   
+//  ****************************************************************************
+//      Interactive Instrument Editor
+//  ****************************************************************************
+//  
+    wire [1:0] weight;
+    iie iie(
+        .clk(clk_100),
+        .reset(reset),
+        .weight_button(weight_b),
+        .weight(weight)
+    );
+    
 //   
 //  ****************************************************************************
 //      The music player
@@ -131,7 +146,7 @@ module lab5_top(
         .reset(reset),
         .play_button(play),
         .next_button(next),
-        .weight(weight_b),
+        .weight(weight),
         .new_frame(new_frame), 
         .sample_out(codec_sample),
         .new_sample_generated(new_sample)
@@ -223,6 +238,7 @@ module lab5_top(
         .x(x[10:0]),
         .y(y[9:0]),
         //.valid(valid),
+        .weight(weight),
 		.valid(vde),
 		.vsync(vsync),
 		.r(r_1),
