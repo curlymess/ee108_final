@@ -10,6 +10,7 @@ module wave_display_top(
     input ff_switch0,
     input r_switch1,
     input [1:0] weight,
+    input play,
     output [7:0] r,
     output [7:0] g,
     output [7:0] b
@@ -53,6 +54,7 @@ module wave_display_top(
         .valid(valid),
         .ff_switch0(ff_switch0),
         .r_switch1(r_switch1),
+        .play(play),
         .read_address(read_address),
         .read_value(read_sample),
         .read_index(read_index),

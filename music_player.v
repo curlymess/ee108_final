@@ -28,7 +28,9 @@ module music_player(
 
     // Our final output sample to the codec. This needs to be synced to
     // new_frame.
-    output wire [17:0] sample_out
+    output wire [17:0] sample_out,
+    
+    output wire play
 );
     // The BEAT_COUNT is parameterized so you can reduce this in simulation.
     // If you reduce this to 100 your simulation will be 10x faster.
@@ -43,7 +45,6 @@ module music_player(
 //   a pop when it resets the output sample.
 //
  
-    wire play;
     wire reset_player;
     wire [1:0] current_song;
     wire song_done;

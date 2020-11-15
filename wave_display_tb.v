@@ -1,9 +1,10 @@
 module wave_display_tb ();
 
 // inputs
-reg clk, reset, valid, read_index;
+reg clk, reset, valid, read_index, ff_switch0, r_switch1;
 reg [10:0] x;
 reg [9:0] y;
+reg [1:0] weight;
 wire [7:0] read_value;
 
 // outputs
@@ -16,6 +17,7 @@ reg exp_valid_pixel;
 
 // instantiation
 wave_display wd (.clk(clk), .reset(reset), .x(x), .y(y), .valid(valid), .read_value(read_value),
+    .weight(weight), .ff_switch0(ff_switch0), .r_switch1(r_switch1),
     .read_index(read_index), .read_address(read_addr), .valid_pixel(valid_pixel), .r(r), .g(g), .b(b));
 
 fake_sample_ram fsr (
@@ -43,6 +45,9 @@ end
 initial begin
     // ensure reset off
     reset = 1'b0;
+    ff_switch0 = 1'b0;
+    r_switch1 = 1'b0;
+    weight = 2'b01;
     
     // set all inputs to 0
     valid = 1'b0;
@@ -61,30 +66,30 @@ initial begin
     x = 11'b00111100110;
     y = 10'b111111110;
     #20
-    $display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
+    //$display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
     //valid x and valid y
     //same read_addr as previous so read_value should not propagate through
     x = 11'b00111100111;
     y = 10'b111111111;
     #20
-    $display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
+    //$display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
     //valid x and valid y 
     //different read_addr so rgb pixels should be white now
     x = 11'b00111111100;
     y = 10'b010111000;
     #20  
-    $display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
+    //$display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
     x = 11'b00111111101;
     y = 10'b010111010;
     #20
-    $display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
+    //$display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
   
     //valid = 0 so pixels should be black;
     valid = 1'b0;
     x = 11'b00111111100;
     y = 10'b0011111100; 
     #20
-    $display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
+    //$display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
    
     #100
     //set read_index to 1 and valid = 1
@@ -94,23 +99,23 @@ initial begin
     x = 11'b01011111111;
     y = 10'b1011111110; //invalid y so pixels should be black
     #20
-    $display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
+    //$display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
     //wave is moving downward case
     x = 11'b01011111111;
     y = 10'b011111111;
     #20
-    $display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
+    //$display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
     #20
     //the addr did not change 
     x = 11'b00111111100;
     y = 10'b011111111;
-    $display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
+    //$display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
     #20
     //addr changed and y coor is in range so pixels should be white
     x = 11'b00111111101;
     y = 10'b011111101;
     #20
-    $display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
+    //$display("x %b, y %b, valid %b, read_address %b, read_value %b, read_index %b, valid_pixel %b, r %b, g %b, b %b, read_value bounds [%b, %b]", x, y, valid, read_addr, read_value, read_index, valid_pixel, r, g, b, wd.read_value_adj, wd.curr_read_value);
     #100
     
     ////// Output: valid_pixel ////// 
@@ -122,37 +127,50 @@ initial begin
     x = 11'b00000000000;    // invalid x val
     y = 10'b1111111111;     // invalid y val
     exp_valid_pixel = 1'b0;
-    #30 $display("x: %b, y: %b = valid_pixel: %b -> %s", x, y, valid_pixel, (valid_pixel == exp_valid_pixel) ? "TRUE" : "FALSE");
+    #30 //$display("x: %b, y: %b = valid_pixel: %b -> %s", x, y, valid_pixel, (valid_pixel == exp_valid_pixel) ? "TRUE" : "FALSE");
     
     // Test 1 - valid_pixel = 0
     x = 11'b00100000000;    // valid x val - 01
     y = 10'b1111111111;     // invalid y val
     exp_valid_pixel = 1'b0;
-    #30 $display("x: %b, y: %b = valid_pixel: %b -> %s", x, y, valid_pixel, (valid_pixel == exp_valid_pixel) ? "TRUE" : "FALSE");
+    #30 //$display("x: %b, y: %b = valid_pixel: %b -> %s", x, y, valid_pixel, (valid_pixel == exp_valid_pixel) ? "TRUE" : "FALSE");
         
     // Test 2 - valid_pixel = 0
     x = 11'b01000000000;    // valid x val - 10
     y = 10'b1111111111;     // invalid y val
     exp_valid_pixel = 1'b0;
-    #30 $display("x: %b, y: %b = valid_pixel: %b -> %s", x, y, valid_pixel, (valid_pixel == exp_valid_pixel) ? "TRUE" : "FALSE");
+    #30 //$display("x: %b, y: %b = valid_pixel: %b -> %s", x, y, valid_pixel, (valid_pixel == exp_valid_pixel) ? "TRUE" : "FALSE");
 
     // Test 3 - valid_pixel = 0
     x = 11'b00000000000;    // invalid x val
     y = 10'b0000000000;     // valid y val
     exp_valid_pixel = 1'b0;
-    #30 $display("x: %b, y: %b = valid_pixel: %b -> %s", x, y, valid_pixel, (valid_pixel == exp_valid_pixel) ? "TRUE" : "FALSE");
+    #30 //$display("x: %b, y: %b = valid_pixel: %b -> %s", x, y, valid_pixel, (valid_pixel == exp_valid_pixel) ? "TRUE" : "FALSE");
 
     // Test 4 - valid_pixel = 1
     x = 11'b01000000000;    // valid x val - 10
     y = 10'b0111111111;     // valid y val
     exp_valid_pixel = 1'b1;
-    #30 $display("x: %b, y: %b = valid_pixel: %b -> %s", x, y, valid_pixel, (valid_pixel == exp_valid_pixel) ? "TRUE" : "FALSE");
+    #30 //$display("x: %b, y: %b = valid_pixel: %b -> %s", x, y, valid_pixel, (valid_pixel == exp_valid_pixel) ? "TRUE" : "FALSE");
 
     // Test 5 - valid_pixel = 1
     x = 11'b00100011000;    // valid x val - 01
     y = 10'b0111111111;     // valid y val
     exp_valid_pixel = 1'b1;
-    #30 $display("x: %b, y: %b = valid_pixel: %b -> %s", x, y, valid_pixel, (valid_pixel == exp_valid_pixel) ? "TRUE" : "FALSE");
+    #30 //$display("x: %b, y: %b = valid_pixel: %b -> %s", x, y, valid_pixel, (valid_pixel == exp_valid_pixel) ? "TRUE" : "FALSE");
+    
+    /////////// Check Icons location
+    x = 11'd825;
+    y = 10'd480;
+    #30
+    
+    x = 11'd835;
+    #30
+    
+    x = 11'd845;
+    #30
+    
+    
     #100
     $stop;
 end
