@@ -15,6 +15,10 @@ module music_player(
     input play_button,
     input next_button,
     input [1:0] weight,
+    
+    // Our switches
+    input ff_switch0,
+    input r_switch1,
 
     // The raw new_frame signal from the ac97_if codec.
     input new_frame,
@@ -68,6 +72,8 @@ module music_player(
         .clk(clk),
         .reset(reset | reset_player),
         .play(play),
+        .ff_switch0(ff_switch0),
+        .r_switch1(r_switch1),
         .beat(beat),
         .song(current_song),
         .note_done(note_done),
@@ -84,6 +90,7 @@ module music_player(
 //      Harmonic Chord Player
 //  ****************************************************************************
 //  
+  
     wire generate_next_sample;
     wire sample_ready;
     wire [17:0] final_sample;
@@ -100,6 +107,7 @@ module music_player(
         .beat(beat),                // This is our 1/48th second beat
         .generate_next_sample(generate_next_sample),// Tells us when the codec wants a new sample
         .weight(weight),
+        //.weight(2'd2),
         .final_sample(final_sample),  // Our sample output - note1,2,3 and harmonics together!
         .note_done(note_done),          // When we are done with a note this stays high - combo of note_done1,2,3
         .sample_ready(sample_ready)  

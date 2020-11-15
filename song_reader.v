@@ -20,6 +20,8 @@ module song_reader(
     input [1:0] song,
     input note_done,
     input beat,
+    input ff_switch0,
+    input r_switch1,
     output wire song_done,
     output wire [5:0] note,
     output wire [5:0] duration,
@@ -70,11 +72,12 @@ end
 assign {overflow, next_note_num} =
        (state == `INCREMENT_ADDRESS) ? {1'b0, curr_note_num} + 1
                                      : {1'b0, curr_note_num};
+wire [5:0] duration_temp = rom_out[8:3];
 
 /////// Outputs ///////                                     
 assign new_note = (state == `NEW_NOTE_READY);
 assign note = rom_out[14:9];
-assign duration = rom_out[8:3];
+assign duration = ff_switch0 || r_switch1 ? duration_temp >> 1 : duration_temp; // half the duration if ff or rewind
 assign activate = rom_out[15];
 assign song_done = overflow;
 

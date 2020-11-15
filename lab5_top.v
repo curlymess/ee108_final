@@ -28,9 +28,12 @@ module lab5_top(
     output wire [3:0] led,
     output wire [2:0] leds_rgb_0,
     output wire [2:0] leds_rgb_1,
-
+    
+    // Buttons
     input [3:0] btn,
-
+    
+    // Switches
+    input [1:0] sw,
     /* 
     //VGA OUTPUT 
     output [3:0] VGA_R,
@@ -52,6 +55,9 @@ module lab5_top(
     wire reset, play_button, next_button, weight_button;
     assign {weight_button, reset, play_button, next_button} = btn;
 
+    wire ff_switch0, r_switch1;
+    assign {ff_switch0, r_switch1} = sw;
+    
     // Clock converter
     wire clk_100, display_clk, serial_clk;
     wire LED0;      // TODO: assign this to a real LED
@@ -147,6 +153,8 @@ module lab5_top(
         .play_button(play),
         .next_button(next),
         .weight(weight),
+        .ff_switch0(ff_switch0),
+        .r_switch1(r_switch1),
         .new_frame(new_frame), 
         .sample_out(codec_sample),
         .new_sample_generated(new_sample)
@@ -238,6 +246,8 @@ module lab5_top(
         .x(x[10:0]),
         .y(y[9:0]),
         //.valid(valid),
+        .ff_switch0(ff_switch0),
+        .r_switch1(r_switch1),
         .weight(weight),
 		.valid(vde),
 		.vsync(vsync),

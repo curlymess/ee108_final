@@ -7,6 +7,8 @@ module wave_display_top(
     input [9:0]  y,  // [0..1023]     
     input valid,
     input vsync,
+    input ff_switch0,
+    input r_switch1,
     input [1:0] weight,
     output [7:0] r,
     output [7:0] g,
@@ -49,6 +51,8 @@ module wave_display_top(
         .x(x),
         .y(y),
         .valid(valid),
+        .ff_switch0(ff_switch0),
+        .r_switch1(r_switch1),
         .read_address(read_address),
         .read_value(read_sample),
         .read_index(read_index),
