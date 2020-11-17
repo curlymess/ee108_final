@@ -8,7 +8,7 @@ module create_harmonic(
 	output signed [17:0] harmonic_out,
 	output sample_ready
 );
-wire signed [15:0] out1; 
+wire signed [15:0] out1; //Is there a good reason for this other than we dont need all 18 bits? 
 wire signed [17:0] out2, out3;
 wire signed [15:0] harm1, harm2, harm3;
 wire [19:0] harm_step2, harm_step3;

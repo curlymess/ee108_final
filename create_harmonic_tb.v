@@ -28,7 +28,7 @@ create_harmonic ch_test(
     end
 
     // Tests
-    integer delay = 50000;
+    integer delay = 25000;
     initial begin
         reset = 1'b0;
         #10
@@ -37,11 +37,32 @@ create_harmonic ch_test(
         play_enable = 1'b1;
         
         //// Weight = 0 ////
+        
+        //Regular Case 
         weight = 2'd0;
         generate_next_sample = 1'b0;
-        repeat(delay)
-        #5
-        generate_next_sample= ~generate_next_sample;
+        repeat(delay) begin
+            #5
+            generate_next_sample= ~generate_next_sample;
+        end
+        
+        //Change Step Size
+        step_size = 20'd1000;
+        repeat(delay) begin
+            #5
+            generate_next_sample= ~generate_next_sample;
+        end
+        
+        //disable Play_enable
+        play_enable = 0;
+        repeat(delay) begin
+            #5
+            generate_next_sample= ~generate_next_sample;
+        end   
+        play_enable = 1;     
+        
+       //// Weight = 1 ////
+        
         #500
         generate_next_sample = 1'b0;
         $display("weight = %d, play_enable = %d, step_size = %d, harm_out = %b, sample_ready = %d", weight, play_enable, step_size, harmonic_out, sample_ready);
@@ -50,9 +71,12 @@ create_harmonic ch_test(
          //// Weight = 1 ////
         weight = 2'd1;
         generate_next_sample = 1'b0;
-        repeat(delay)
-        #5
-        generate_next_sample= ~generate_next_sample;
+        
+        repeat(delay) begin
+            #5
+            generate_next_sample= ~generate_next_sample;
+        end
+        
         #500
         generate_next_sample = 1'b0;
         $display("weight = %d, play_enable = %d, step_size = %d, harm_out = %b, sample_ready = %d", weight, play_enable, step_size, harmonic_out, sample_ready);
@@ -61,14 +85,17 @@ create_harmonic ch_test(
         //// Weight = 2 ////
         weight = 2'd2;
         generate_next_sample = 1'b0;
-        repeat(delay)
-        #5
-        generate_next_sample= ~generate_next_sample;
-        #500
-        generate_next_sample = 1'b0;
+        repeat(delay) begin
+            #5
+            generate_next_sample= ~generate_next_sample;
+        end
+ 
         $display("weight = %d, play_enable = %d, step_size = %d, harm_out = %b, sample_ready = %d", weight, play_enable, step_size, harmonic_out, sample_ready);
         #400
-           
+        reset = 1'b1;
+        #10
+        reset= 1'b0;
+        generate_next_sample = 1'b0;
         $stop;
     end
 
