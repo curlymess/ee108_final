@@ -9,6 +9,7 @@ module wave_display_top(
     input vsync,
     input ff_switch0,
     input r_switch1,
+    input [1:0] song_num,
     input [1:0] weight,
     input play,
     output [7:0] r,
@@ -60,6 +61,7 @@ module wave_display_top(
         .read_index(read_index),
         .valid_pixel(valid_pixel),
         .weight(weight),
+        .song_num(song_num),
         .r(wd_r), .g(wd_g), .b(wd_b)
     );
 

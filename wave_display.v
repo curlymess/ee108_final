@@ -9,6 +9,7 @@ module wave_display (
     input [1:0] weight,
     input ff_switch0,
     input r_switch1,
+    input [1:0] song_num,
     input play,
     output wire [8:0] read_address,
     output wire valid_pixel,
@@ -20,13 +21,11 @@ module wave_display (
 ///
 `define PLAY_ADDR       9'h000
 `define PAUSE_ADDR      9'h008
-//`define NEXT_ADDR       9'h010
 `define FF_ADDR         9'h018
 `define REWIND_ADDR     9'h028
 //// 
 `define PLAY_X          11'd815
 `define PAUSE_X         11'd825
-//`define NEXT_X          11'd835
 `define FF_X            11'd835
 `define REWIND_X        11'd845
 ///
@@ -39,6 +38,16 @@ module wave_display (
 `define END_ICON_BOXX   11'd856
 `define START_ICON_BOXY 10'd475
 `define END_ICON_BOXY   10'd492
+///
+`define ZERO_ADDR       9'h180
+`define ONE_ADDR        9'h188
+`define TWO_ADDR        9'h190
+`define THREE_ADDR      9'h198
+///
+`define START_NUMX      11'd815
+`define END_NUMX        11'd823
+`define START_NUMY      10'd463
+`define END_NUMY        10'd471
 ///
 `define W_ADDR          9'h0b8
 `define E_ADDR          9'h030
@@ -126,11 +135,6 @@ always @(*) begin
             addr = `FF_ADDR + (y - `START_ICONY);
             letter_start = `FF_X;
             color = ff_switch0 ? 24'hFF0000 : 24'h1A578F;
-//        end else if ( x >= `NEXT_X) begin
-//            addr = `NEXT_ADDR + (y - `START_ICONY);
-//            letter_start = `NEXT_X;
-//            //color = nextb ? 24'hFF0000 : 24'h1A578F;
-//            color = 24'h1A578F;
         end else if ( x >= `PAUSE_X) begin
             addr = `PAUSE_ADDR + (y - `START_ICONY);
             letter_start = `PAUSE_X;
@@ -140,6 +144,12 @@ always @(*) begin
             letter_start = `PLAY_X;
             color = play ? 24'hFF0000 : 24'h1A578F;
         end
+    end else if (x <= `END_NUMX && x >= `START_NUMX && y <= `END_NUMY && y >= `START_NUMY) begin
+            addr = ((song_num == 2'd0)  ? `ZERO_ADDR : 
+                    ((song_num == 2'd1) ? `ONE_ADDR  : 
+                    ((song_num == 2'd2) ? `TWO_ADDR  : `THREE_ADDR)));
+            letter_start = `START_NUMX;
+            color = 24'hFF0000;
     end else begin
         addr = 9'd0;
         letter_start = 13'd0;
@@ -180,6 +190,10 @@ always @(*) begin
 	end else if(valid && x <= `END_ICON_BOXX && x >= `START_ICON_BOXX && y <= `END_ICON_BOXY && y >= `START_ICON_BOXY) begin
 	   {r_temp, g_temp, b_temp} = 24'hFFFFFF;
 	   valid_pixel_temp = 1'b1;
+	// song num
+    end else if (x <= `END_NUMX && x >= `START_NUMX && y <= `END_NUMY && y >= `START_NUMY) begin
+        {r_temp, g_temp, b_temp} = (data[letter_start + 11'd7 - x]) ? color : 24'h000000;
+	    valid_pixel_temp = 1'b1;	
 	// everything else
     end else begin
 	   {r_temp, g_temp, b_temp} = reset ? (24'h000000) : ((make_white & valid_pixel) ? (24'hFFFFFF) : (24'h000000));

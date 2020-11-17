@@ -29,7 +29,7 @@ module music_player(
     // Our final output sample to the codec. This needs to be synced to
     // new_frame.
     output wire [17:0] sample_out,
-    
+    output wire [1:0] current_song,
     output wire play
 );
     // The BEAT_COUNT is parameterized so you can reduce this in simulation.
@@ -46,7 +46,6 @@ module music_player(
 //
  
     wire reset_player;
-    wire [1:0] current_song;
     wire song_done;
     mcu mcu(
         .clk(clk),
