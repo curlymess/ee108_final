@@ -3,7 +3,7 @@ module music_player_tb();
     reg [1:0] weight_button;
     wire new_frame;
     wire [17:0] sample;
-    reg [1:0] current_song;
+    wire [1:0] current_song;
     wire play;
     
 
@@ -16,21 +16,9 @@ module music_player_tb();
         .new_frame(new_frame),
         .sample_out(sample),
         .ff_switch0(ff_switch0),
-<<<<<<< Updated upstream
         .r_switch1(r_switch1),
         .current_song(current_song),
-        .play(play),
-        .new_sample_generat
-        
-         output wire new_sample_generated,
-
-    // Our final output sample to the codec. This needs to be synced to
-    // new_frame.
-    output wire [1:0] current_song,
-    output wire play
-=======
-        .r_switch1(r_switch1)
->>>>>>> Stashed changes
+        .play(play)
     );
 
     // AC97 interface
@@ -97,7 +85,7 @@ module music_player_tb();
         next_button = 1'b1;
         #30
         next_button = 1'b0;
-        
+
 //        @(negedge clk);
 //        play_button = 1'b1;
 //        //weight_button = 1'b1;
@@ -131,7 +119,43 @@ module music_player_tb();
         
         
         
-//        // Reset
+
+        
+//        @(negedge clk);
+//        play_button = 1'b1;
+//        //weight_button = 1'b1;
+//        @(negedge clk);
+//        play_button = 1'b0;
+//        repeat (delay) begin
+//            @(negedge clk);
+//        end
+//        @(negedge clk);
+//        play_button = 1'b1;
+//        @(negedge clk);
+//        play_button = 1'b0;
+//        repeat (delay) begin
+//            @(negedge clk);
+//        end
+//        @(negedge clk);
+//        play_button = 1'b1;
+//        @(negedge clk);
+//        play_button = 1'b0;
+//        repeat (delay) begin
+//            @(negedge clk);
+//        end
+//        @(negedge clk);
+//        play_button = 1'b1;
+//        @(negedge clk);
+//        play_button = 1'b0;
+//        repeat (delay) begin
+//            @(negedge clk);
+//        end
+        
+        
+        
+
+//        // Reset        
+
 //        $display("Reset song 0...");
 //        reset = 1'b1;
 //        @(negedge clk);
