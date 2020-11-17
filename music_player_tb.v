@@ -16,6 +16,7 @@ module music_player_tb();
         .new_frame(new_frame),
         .sample_out(sample),
         .ff_switch0(ff_switch0),
+<<<<<<< Updated upstream
         .r_switch1(r_switch1),
         .current_song(current_song),
         .play(play),
@@ -27,6 +28,9 @@ module music_player_tb();
     // new_frame.
     output wire [1:0] current_song,
     output wire play
+=======
+        .r_switch1(r_switch1)
+>>>>>>> Stashed changes
     );
 
     // AC97 interface

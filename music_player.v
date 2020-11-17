@@ -34,7 +34,7 @@ module music_player(
 );
     // The BEAT_COUNT is parameterized so you can reduce this in simulation.
     // If you reduce this to 100 your simulation will be 10x faster.
-    parameter BEAT_COUNT = 1000;
+    parameter BEAT_COUNT = 100; //1000
 
 //
 //  ****************************************************************************
@@ -121,6 +121,7 @@ module music_player(
 //  codec's new_frame input) down by 1000, to 48Hz. If you change the BEAT_COUNT
 //  parameter when instantiating this you can change it for simulation.
 //  
+//.STOP(BEAT_COUNT)
     beat_generator #(.WIDTH(10), .STOP(BEAT_COUNT)) beat_generator(
         .clk(clk),
         .reset(reset),

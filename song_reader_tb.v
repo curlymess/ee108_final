@@ -27,7 +27,7 @@ module song_reader_tb();
     // Clock and reset
     initial begin
         clk = 1'b0;
-       reset = 1'b1;
+        reset = 1'b1;
         repeat (4) #5 clk = ~clk;
         reset = 1'b0;
         forever #5 clk = ~clk;
@@ -39,7 +39,6 @@ module song_reader_tb();
     r_switch1  = 1'b0;
     #10
     reset     = 1'b0;
-
     //ADJUST NOTE DONE
     // Play song 0
     song      = 2'd0;

@@ -65,7 +65,7 @@ dffre #(.WIDTH(6)) duration_counter4 (
    .q(count4)
 );
 
-assign next_count4 = load_new_note ? duration: (count4!= 0) ? (count4-1) : 0;
+//assign next_count4 = load_new_note4 ? duration4: (count4!= 0) ? (count4-1) : 0;
 assign activate2 = (count4 != 0) ? 1:0;
 
 
@@ -80,13 +80,16 @@ assign next_count2 = (reset || note_done2 || load_new_note2 || count2 == 6'b0)
                     ? duration2 : (count2 - 6'd1);
 assign next_count3 = (reset || note_done3 || load_new_note3 || count3 == 6'b0)
                     ? duration3 : (count3 - 6'd1);
+assign next_count4 = (reset || note_done4 || load_new_note4 || count4 ==6'b0) 
+                    ? duration4: (count4-1);
+
 assign next_dur =  duration4;
 
 
 
 /// GOAL - Load New Note into proper Note Number
 always @(*) begin
-    if ( activate && load_new_note ) begin
+    if (activate &&load_new_note &&(count4 ==0) ) begin
         load_new_note1 = 1'b0;
         load_new_note2 = 1'b0;
         load_new_note3 = 1'b0;

@@ -77,10 +77,15 @@ harm_chord_player hcp1(
         load_new_note = 1'b1;
         #10
         load_new_note = 1'b0;
-        #10       
+        #10     
+        activate = 1'b1;
+  
+        load_new_note = 1'b1;
+        #10
+
+        load_new_note = 1'b0;
         
         // play chord, same durations
-        activate = 1'b1;
         generate_next_sample = 1'b1;
         #5000
         activate = 1'b0;
