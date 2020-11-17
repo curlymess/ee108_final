@@ -67,7 +67,7 @@ module music_player(
     wire [5:0] duration_for_note;
     wire [2:0] parameters;
     wire new_note, activate;
-    wire note_done;
+    wire note_done, activate_done;
     song_reader song_reader(
         .clk(clk),
         .reset(reset | reset_player),
@@ -75,6 +75,7 @@ module music_player(
         .ff_switch0(ff_switch0),
         .r_switch1(r_switch1),
         .beat(beat),
+        .activate_done(activate_done),
         .song(current_song),
         .note_done(note_done),
         .song_done(song_done),
@@ -110,6 +111,7 @@ module music_player(
         //.weight(2'd2),
         .final_sample(final_sample),  // Our sample output - note1,2,3 and harmonics together!
         .note_done(note_done),          // When we are done with a note this stays high - combo of note_done1,2,3
+        .activate_done(activate_done),
         .sample_ready(sample_ready)  
     );
       

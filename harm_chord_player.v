@@ -12,6 +12,7 @@ module harm_chord_player(
 	
     output [17:0] final_sample,  // Our sample output - note1,2,3 and harmonics together!
     output note_done,            // When we are done with a note this stays high - combo of note_done1,2,3
+    output activate_done,
     output sample_ready          // Tells the codec when we've got a sample - combo of sample_ready1,2,3
 );
 
@@ -73,6 +74,7 @@ assign note_done1 = (count1 == 6'd0);
 assign note_done2 = (count2 == 6'd0);
 assign note_done3 = (count3 == 6'd0);
 assign note_done4 = (count4 == 6'd0);
+assign activate_done = note_done4;
 
 assign next_count1 = (reset || note_done1 || load_new_note1 || count1 == 6'b0)
                     ? duration1 : (count1 - 6'd1);

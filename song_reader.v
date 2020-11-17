@@ -22,6 +22,7 @@ module song_reader(
     input beat,
     input ff_switch0,
     input r_switch1,
+    input activate_done,
     output wire song_done,
     output wire [5:0] note,
     output wire [5:0] duration,
@@ -61,7 +62,7 @@ always @(*) begin
        `RETRIEVE_NOTE:     next = play ? `NEW_NOTE_READY : `PAUSED;
        `NEW_NOTE_READY:    next = play ? `WAIT: `PAUSED;
        `WAIT:              next = !play ? `PAUSED
-                                  : (note_done) ? `CHANGE_ADDRESS
+                                  : (rom_out[15] ? activate_done : note_done) ? `CHANGE_ADDRESS
                                                 : `WAIT;
        `CHANGE_ADDRESS: begin
             if(r_switch1) begin
