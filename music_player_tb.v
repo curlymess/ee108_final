@@ -1,17 +1,32 @@
 module music_player_tb();
-    reg clk, reset, next_button, play_button;
+    reg clk, reset, next_button, play_button, ff_switch0, r_switch1;
     reg [1:0] weight_button;
     wire new_frame;
     wire [17:0] sample;
+    reg [1:0] current_song;
+    wire play;
+    
 
-    music_player #(.BEAT_COUNT(500)) music_player(
+    music_player #(.BEAT_COUNT(100)) music_player(
         .clk(clk),
         .reset(reset),
         .next_button(next_button),
         .play_button(play_button),
         .weight(weight_button),
         .new_frame(new_frame),
-        .sample_out(sample)
+        .sample_out(sample),
+        .ff_switch0(ff_switch0),
+        .r_switch1(r_switch1),
+        .current_song(current_song),
+        .play(play),
+        .new_sample_generat
+        
+         output wire new_sample_generated,
+
+    // Our final output sample to the codec. This needs to be synced to
+    // new_frame.
+    output wire [1:0] current_song,
+    output wire play
     );
 
     // AC97 interface
@@ -52,6 +67,8 @@ module music_player_tb();
         play_button = 1'b0;
         next_button = 1'b0;
         weight_button = 1'b0;
+        ff_switch0 = 1'b0;
+        r_switch1 = 1'b0;
         @(negedge reset);
         @(negedge clk);
 
@@ -73,44 +90,80 @@ module music_player_tb();
             @(negedge clk);
         end
         
+        next_button = 1'b1;
+        #30
+        next_button = 1'b0;
         
-        // Reset
-        $display("Reset song 0...");
-        reset = 1'b1;
-        @(negedge clk);
-        reset = 1'b0;
+//        @(negedge clk);
+//        play_button = 1'b1;
+//        //weight_button = 1'b1;
+//        @(negedge clk);
+//        play_button = 1'b0;
+//        repeat (delay) begin
+//            @(negedge clk);
+//        end
+//        @(negedge clk);
+//        play_button = 1'b1;
+//        @(negedge clk);
+//        play_button = 1'b0;
+//        repeat (delay) begin
+//            @(negedge clk);
+//        end
+//        @(negedge clk);
+//        play_button = 1'b1;
+//        @(negedge clk);
+//        play_button = 1'b0;
+//        repeat (delay) begin
+//            @(negedge clk);
+//        end
+//        @(negedge clk);
+//        play_button = 1'b1;
+//        @(negedge clk);
+//        play_button = 1'b0;
+//        repeat (delay) begin
+//            @(negedge clk);
+//        end
         
-        weight_button = 2'd1;
-        @(negedge clk);
-        play_button = 1'b1;
-        @(negedge clk);
-        play_button = 1'b0;
+        
+        
+        
+//        // Reset
+//        $display("Reset song 0...");
+//        reset = 1'b1;
+//        @(negedge clk);
+//        reset = 1'b0;
+        
+//        weight_button = 2'd1;
+//        @(negedge clk);
+//        play_button = 1'b1;
+//        @(negedge clk);
+//        play_button = 1'b0;
         
               
-        repeat (delay) begin
-            @(negedge clk);
-        end
+//        repeat (delay) begin
+//            @(negedge clk);
+//        end
 
-        //case3
-        reset = 1'b1;
-        @(negedge clk);
-        reset = 1'b0;
-        weight_button = 2'd1;
+//        //case3
+//        reset = 1'b1;
+//        @(negedge clk);
+//        reset = 1'b0;
+//        weight_button = 2'd1;
 
-        @(negedge clk);
-        play_button = 1'b1;
-        //weight_button = 1'b1;
-        @(negedge clk);
-        play_button = 1'b0;
-        //weight_button = 1'b0; 
-        @(negedge clk);
-        //weight_button = 1'b1;
-        @(negedge clk);
-        //weight_button = 1'b0;
+//        @(negedge clk);
+//        play_button = 1'b1;
+//        //weight_button = 1'b1;
+//        @(negedge clk);
+//        play_button = 1'b0;
+//        //weight_button = 1'b0; 
+//        @(negedge clk);
+//        //weight_button = 1'b1;
+//        @(negedge clk);
+//        //weight_button = 1'b0;
         
-        repeat (delay) begin
-            @(negedge clk);
-        end
+//        repeat (delay) begin
+//            @(negedge clk);
+//        end
         
         
         
