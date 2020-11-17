@@ -45,7 +45,7 @@ module wave_display (
 `define THREE_ADDR      9'h198
 ///
 `define START_NUMX      11'd815
-`define END_NUMX        11'd823
+`define END_NUMX        11'd822
 `define START_NUMY      10'd463
 `define END_NUMY        10'd471
 ///
@@ -145,9 +145,9 @@ always @(*) begin
             color = play ? 24'hFF0000 : 24'h1A578F;
         end
     end else if (x <= `END_NUMX && x >= `START_NUMX && y <= `END_NUMY && y >= `START_NUMY) begin
-            addr = ((song_num == 2'd0)  ? `ZERO_ADDR : 
-                    ((song_num == 2'd1) ? `ONE_ADDR  : 
-                    ((song_num == 2'd2) ? `TWO_ADDR  : `THREE_ADDR)));
+            addr = ((song_num == 2'd0)  ? `ZERO_ADDR + (y - `START_NUMY)  : 
+                    ((song_num == 2'd1) ? `ONE_ADDR  + (y - `START_NUMY)  : 
+                    ((song_num == 2'd2) ? `TWO_ADDR  + (y - `START_NUMY)  : `THREE_ADDR + (y - `START_NUMY))));
             letter_start = `START_NUMX;
             color = 24'hFF0000;
     end else begin
@@ -192,7 +192,7 @@ always @(*) begin
 	   valid_pixel_temp = 1'b1;
 	// song num
     end else if (x <= `END_NUMX && x >= `START_NUMX && y <= `END_NUMY && y >= `START_NUMY) begin
-        {r_temp, g_temp, b_temp} = (data[letter_start + 11'd7 - x]) ? color : 24'h000000;
+        {r_temp, g_temp, b_temp} = (data[`END_NUMX - x]) ? color : 24'h000000;
 	    valid_pixel_temp = 1'b1;	
 	// everything else
     end else begin

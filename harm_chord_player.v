@@ -179,7 +179,6 @@ note_player np1(
 	.generate_next_sample(generate_next_sample),
 	// note specific variables
 	.note_to_load(note_to_load1),
-	.duration(duration1),
 	.load_new_note(load_new_note1),
 	.harmonic_ready(harmonic_ready1),
 	.harmonic_out(harmonic_out1)
@@ -193,7 +192,6 @@ note_player np2(
 	.generate_next_sample(generate_next_sample),
 	// note specific variables
 	.note_to_load(note_to_load2),
-	.duration(duration2),
 	.load_new_note(load_new_note2),
 	.harmonic_ready(harmonic_ready2),
 	.harmonic_out(harmonic_out2)
@@ -207,7 +205,6 @@ note_player np3(
 	.generate_next_sample(generate_next_sample),
 	// note specific variables
 	.note_to_load(note_to_load3),
-	.duration(duration3),
 	.load_new_note(load_new_note3),
 	.harmonic_ready(harmonic_ready3),
 	.harmonic_out(harmonic_out3)

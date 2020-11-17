@@ -1,10 +1,10 @@
 module wave_display_tb ();
 
 // inputs
-reg clk, reset, valid, read_index, ff_switch0, r_switch1;
+reg clk, reset, valid, read_index, ff_switch0, r_switch1, play;
 reg [10:0] x;
 reg [9:0] y;
-reg [1:0] weight;
+reg [1:0] weight, song_num;
 wire [7:0] read_value;
 
 // outputs
@@ -17,7 +17,7 @@ reg exp_valid_pixel;
 
 // instantiation
 wave_display wd (.clk(clk), .reset(reset), .x(x), .y(y), .valid(valid), .read_value(read_value),
-    .weight(weight), .ff_switch0(ff_switch0), .r_switch1(r_switch1),
+    .weight(weight), .ff_switch0(ff_switch0), .r_switch1(r_switch1), .song_num(song_num), .play(play),
     .read_index(read_index), .read_address(read_addr), .valid_pixel(valid_pixel), .r(r), .g(g), .b(b));
 
 fake_sample_ram fsr (
@@ -41,6 +41,7 @@ initial begin
     forever #5 clk = ~clk;
 end
 
+integer i, j;
 // Tests
 initial begin
     // ensure reset off
@@ -48,7 +49,8 @@ initial begin
     ff_switch0 = 1'b0;
     r_switch1 = 1'b0;
     weight = 2'b01;
-    
+    song_num = 1'b0;
+    play = 1'b0;
     // set all inputs to 0
     valid = 1'b0;
     read_index = 1'b0;
@@ -169,6 +171,22 @@ initial begin
     
     x = 11'd845;
     #30
+    /////////// Check song num 0
+    x = 11'd815;
+    y = 10'd463;
+    #30   
+    for ( i = 463; i <  471; i=i+1) begin
+        for(j= 815; j < 823; j=j+1) begin
+            x = j;
+            y = i;
+            #10;
+        end
+    end
+
+    
+    
+    
+    
     
     
     #100
