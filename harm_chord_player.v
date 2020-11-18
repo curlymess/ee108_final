@@ -220,5 +220,5 @@ note_player np3(
 //////////// OUTPUTS ////////////   
 assign final_sample = harmonic_out1 + harmonic_out2 + harmonic_out3;
 assign note_done = note_done1 || note_done2 || note_done3 || note_done4;
-assign sample_ready = harmonic_ready1 && harmonic_ready2 && harmonic_ready3;
+assign sample_ready = harmonic_ready1 || harmonic_ready2 || harmonic_ready3;
 endmodule
