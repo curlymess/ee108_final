@@ -9,11 +9,11 @@ module harm_chord_player(
     input  beat,                // This is our 1/48th second beat
     input  generate_next_sample,// Tells us when the codec wants a new sample
     input  [1:0] weight,
-	
-    output [17:0] final_sample,  // Our sample output - note1,2,3 and harmonics together!
-    output note_done,            // When we are done with a note this stays high - combo of note_done1,2,3
+	output note_done,
+    output [17:0] final_sample,  // Our sample output - note1,2,3 and harmonics together!            // When we are done with a note this stays high - combo of note_done1,2,3
     output activate_done,
-    output sample_ready          // Tells the codec when we've got a sample - combo of sample_ready1,2,3
+    output sample_ready 
+             // Tells the codec when we've got a sample - combo of sample_ready1,2,3
 );
 
 /// Generate Samples for each Note    
@@ -182,7 +182,7 @@ note_player np1(
 	.play_enable(play_enable),
 	.weight(weight),
 	.generate_next_sample(generate_next_sample),
-	// note specific variables
+	.note_done(note_done1),
 	.note_to_load(note_to_load1),
 	.load_new_note(load_new_note1),
 	.harmonic_ready(harmonic_ready1),
@@ -196,6 +196,7 @@ note_player np2(
 	.weight(weight),
 	.generate_next_sample(generate_next_sample),
 	// note specific variables
+	.note_done(note_done2),
 	.note_to_load(note_to_load2),
 	.load_new_note(load_new_note2),
 	.harmonic_ready(harmonic_ready2),
@@ -209,6 +210,7 @@ note_player np3(
 	.weight(weight),
 	.generate_next_sample(generate_next_sample),
 	// note specific variables
+	.note_done(note_done3),
 	.note_to_load(note_to_load3),
 	.load_new_note(load_new_note3),
 	.harmonic_ready(harmonic_ready3),

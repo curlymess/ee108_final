@@ -85,6 +85,9 @@ module music_player_tb();
         next_button = 1'b1;
         #30
         next_button = 1'b0;
+        play_button = 1'b1;
+        #10
+        play_button = 1'b0;
 
 //        @(negedge clk);
 //        play_button = 1'b1;
