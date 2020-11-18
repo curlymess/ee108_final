@@ -6,7 +6,7 @@ module note_player_tb();
     
     /// Outputs ///
     wire [17:0] harmonic_out;
-    wire harmonic_ready;
+    wire harmonic_ready, beat;
     
 
     note_player np_tb(

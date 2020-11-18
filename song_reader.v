@@ -19,7 +19,6 @@ module song_reader(
     input wire play,
     input [1:0] song,
     input note_done,
-    input beat,
     input ff_switch0,
     input r_switch1,
     input activate_done,

@@ -74,7 +74,6 @@ module music_player(
         .play(play),
         .ff_switch0(ff_switch0),
         .r_switch1(r_switch1),
-        .beat(beat),
         .activate_done(activate_done),
         .song(current_song),
         .note_done(note_done),
