@@ -71,8 +71,6 @@ module lab5_top(
         .clk_in1(sysclk)
     );
 
-
-  
     // button_press_unit's WIDTH parameter is exposed here so that you can
     // reduce it in simulation.  Setting it to 1 effectively disables it.
     parameter BPU_WIDTH = 20;
@@ -80,7 +78,6 @@ module lab5_top(
     // If you reduce this to 100 your simulation will be 10x faster.
     parameter BEAT_COUNT = 1000;
 
-   
     // These signals are for determining which color to display
     wire [11:0] x;  // [0..1279]
     wire [11:0] y;  // [0..1023] 
@@ -108,7 +105,6 @@ module lab5_top(
         .in(play_button),
         .out(play)
     );
-
     wire next;
     button_press_unit #(.WIDTH(BPU_WIDTH)) next_button_press_unit(
         .clk(clk_100),
@@ -116,7 +112,6 @@ module lab5_top(
         .in(next_button),
         .out(next)
     );
-       
     wire weight_b;
     button_press_unit #(.WIDTH(BPU_WIDTH)) weight_button_press_unit(
         .clk(clk_100),
@@ -124,8 +119,6 @@ module lab5_top(
         .in(weight_button),
         .out(weight_b)
     );
-   
-    
 //   
 //  ****************************************************************************
 //      Interactive Instrument Editor
@@ -138,7 +131,6 @@ module lab5_top(
         .weight_button(weight_b),
         .weight(weight)
     );
-    
 //   
 //  ****************************************************************************
 //      The music player
