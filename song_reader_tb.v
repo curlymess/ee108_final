@@ -3,7 +3,6 @@ module song_reader_tb();
     reg clk, reset, play, note_done, ff_switch0, r_switch1, activate_done;
     reg [1:0] song;
     // outputs
-    wire [2:0] parameters;
     wire [5:0] note;
     wire [5:0] duration;
     wire song_done, new_note, activate;
@@ -22,8 +21,7 @@ module song_reader_tb();
         .note(note),
         .duration(duration),
         .new_note(new_note),
-        .activate(activate),
-        .parameters(parameters)
+        .activate(activate)
     );
 
     // Clock and reset

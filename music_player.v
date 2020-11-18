@@ -65,7 +65,6 @@ module music_player(
 //
     wire [5:0] note_to_play;
     wire [5:0] duration_for_note;
-    wire [2:0] parameters;
     wire new_note, activate;
     wire note_done, activate_done;
     song_reader song_reader(
@@ -81,8 +80,7 @@ module music_player(
         .note(note_to_play),
         .duration(duration_for_note),
         .new_note(new_note),
-        .activate(activate),
-        .parameters(parameters)
+        .activate(activate)
     );
 
 //   
@@ -107,7 +105,6 @@ module music_player(
         .beat(beat),                // This is our 1/48th second beat
         .generate_next_sample(generate_next_sample),// Tells us when the codec wants a new sample
         .weight(weight),
-        //.weight(2'd2),
         .final_sample(final_sample),  // Our sample output - note1,2,3 and harmonics together!
         .note_done(note_done),          // When we are done with a note this stays high - combo of note_done1,2,3
         .activate_done(activate_done),

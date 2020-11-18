@@ -26,8 +26,7 @@ module song_reader(
     output wire [5:0] note,
     output wire [5:0] duration,
     output wire new_note,
-    output wire activate,
-    output wire [2:0] parameters
+    output wire activate
 );
 
 wire [`SONG_WIDTH - 1:0] curr_note_num, next_note_num;
@@ -57,12 +56,11 @@ song_rom rom(.clk(clk), .addr(rom_addr), .dout(rom_out));
 
 always @(*) begin
     case (state)
-       `PAUSED:            next = play ? `RETRIEVE_NOTE : `PAUSED;
-       `RETRIEVE_NOTE:     next = play ? `NEW_NOTE_READY : `PAUSED;
+       `PAUSED:            next = play ? ((r_switch1 && curr_note_num == 4'd0) ? `PAUSED :`RETRIEVE_NOTE) : `PAUSED;
+       `RETRIEVE_NOTE:     next = play ? ((r_switch1 && curr_note_num == 4'd0) ? `PAUSED :`NEW_NOTE_READY) : `PAUSED;
        `NEW_NOTE_READY:    next = play ? `WAIT: `PAUSED;
-       `WAIT:              next = !play ? `PAUSED
-                                  : (rom_out[15] ? activate_done : note_done) ? `CHANGE_ADDRESS
-                                                : `WAIT;
+       `WAIT:              next = !play ? `PAUSED : 
+                                    (rom_out[15] ? activate_done : note_done) ? `CHANGE_ADDRESS : `WAIT;
        `CHANGE_ADDRESS: begin
             if(r_switch1) begin
                 next = (play && curr_note_num == 5'd0) ? `PAUSED : `RETRIEVE_NOTE;
