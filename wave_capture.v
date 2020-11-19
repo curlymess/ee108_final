@@ -73,7 +73,7 @@ end
 	assign count_done =(counter == 8'b11111111); //when the counter has reached 255, the signal count_done goes high
 
 	//determine positive zero crossing
-	assign is_negative = new_sample_in[17] == 1'b1;	//if the module is reset and the sample is less than 0, is_negative signal is high
+	assign is_negative = new_sample_in[15] == 1'b1;	//if the module is reset and the sample is less than 0, is_negative signal is high
 	assign zero_crossing = reset ? 1'b0 : (~is_negative & last_is_negative); //if the sample is not negative and the last sample is negative, positive zero crossing
 
 	//state specific assignments
