@@ -81,14 +81,33 @@ module music_player_tb();
         repeat (delay) begin
             @(negedge clk);
         end
-        
-        next_button = 1'b1;
-        #30
-        next_button = 1'b0;
+        //2nd song
         play_button = 1'b1;
         #10
         play_button = 1'b0;
 
+        repeat (delay) begin
+            @(negedge clk);
+        end
+        
+        
+        //3rd song
+        play_button = 1'b1;
+        #10
+        play_button = 1'b0;
+        
+        repeat (delay) begin
+            @(negedge clk);
+        end  
+        
+        //4th song     
+        play_button = 1'b1;
+        #10
+        play_button = 1'b0;
+        
+        repeat (delay) begin
+            @(negedge clk);
+        end        
 //        @(negedge clk);
 //        play_button = 1'b1;
 //        //weight_button = 1'b1;
