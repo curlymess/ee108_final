@@ -3,7 +3,7 @@ module create_harmonic_tb();
     reg [19:0] step_size;
     reg [1:0] weight;
     //outputs
-    wire signed [17:0] harmonic_out;
+    wire signed [15:0] harmonic_out;
     wire sample_ready;
 
     //instantiate create_harmonic

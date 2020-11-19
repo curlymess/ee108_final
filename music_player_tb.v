@@ -2,7 +2,7 @@ module music_player_tb();
     reg clk, reset, next_button, play_button, ff_switch0, r_switch1;
     reg [1:0] weight_button;
     wire new_frame;
-    wire [17:0] sample;
+    wire [15:0] sample;
     wire [1:0] current_song;
     wire play;
     

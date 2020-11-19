@@ -7,7 +7,7 @@ module note_player(
 	input  [1:0] weight,	
 	input  note_done,	        // Informs create_harmonic how the weight of each harmony
     input  generate_next_sample,// Tells us when the codec wants a new sample
-    output [17:0] harmonic_out, // Our sample output
+    output [15:0] harmonic_out, // Our sample output
     output harmonic_ready     	// Tells the codec when we've got a sample
 );
 
@@ -29,7 +29,7 @@ module note_player(
         .dout(step_size)
     );
 
-wire [17:0] harmonic_out_temp;
+wire [15:0] harmonic_out_temp;
 wire harmonic_ready_temp;
 //////////// CREATE HARMONCS ////////////     
 create_harmonic ch1(
@@ -45,7 +45,7 @@ create_harmonic ch1(
     );
 
 
-dffr #(.WIDTH(18)) out_delay (
+dffr #(.WIDTH(16)) out_delay (
    .clk(clk),
    .r(reset || note_done),
    .d(harmonic_out_temp),

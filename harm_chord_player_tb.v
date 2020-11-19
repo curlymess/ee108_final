@@ -6,7 +6,7 @@ reg [1:0] weight;
 reg [5:0] note_to_load, duration;
 // Outputs
 wire sample_ready, note_done, beat;
-wire [17:0] final_sample;
+wire [15:0] final_sample;
 
 beat_generator #(.WIDTH(17), .STOP(5)) beat_generator(
      .clk(clk),

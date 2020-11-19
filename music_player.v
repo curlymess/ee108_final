@@ -28,7 +28,7 @@ module music_player(
 
     // Our final output sample to the codec. This needs to be synced to
     // new_frame.
-    output wire [17:0] sample_out,
+    output wire [15:0] sample_out,
     output wire [1:0] current_song,
     output wire play
 );
@@ -91,7 +91,7 @@ module music_player(
   
     wire generate_next_sample;
     wire sample_ready;
-    wire [17:0] final_sample;
+    wire [15:0] final_sample;
     
 
     harm_chord_player harmonic_chord_player(

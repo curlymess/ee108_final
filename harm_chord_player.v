@@ -10,7 +10,7 @@ module harm_chord_player(
     input  generate_next_sample,// Tells us when the codec wants a new sample
     input  [1:0] weight,
 	output note_done,
-    output [17:0] final_sample,  // Our sample output - note1,2,3 and harmonics together!            // When we are done with a note this stays high - combo of note_done1,2,3
+    output signed [15:0] final_sample,  // Our sample output - note1,2,3 and harmonics together!            // When we are done with a note this stays high - combo of note_done1,2,3
     output activate_done,
     output sample_ready          // Tells the codec when we've got a sample - combo of sample_ready1,2,3
 );
@@ -90,7 +90,7 @@ assign next_dur =  duration4;
 
 /// GOAL - Load New Note into proper Note Number
 always @(*) begin
-    if (activate &&load_new_note &&(count4 ==0) ) begin
+    if (activate &&load_new_note && (count4 ==0) ) begin
         load_new_note1 = 1'b0;
         load_new_note2 = 1'b0;
         load_new_note3 = 1'b0;
@@ -173,7 +173,7 @@ always @(*) begin
 end
 
 //////////// OBTAIN ORIGINAL SAMPLES ////////////   
-wire [17:0] harmonic_out1, harmonic_out2, harmonic_out3;
+wire signed [15:0] harmonic_out1, harmonic_out2, harmonic_out3;
 wire harmonic_ready1, harmonic_ready2, harmonic_ready3;
 note_player np1(
 	.clk(clk),
@@ -217,7 +217,7 @@ note_player np3(
 	);
 
 //////////// OUTPUTS ////////////   
-assign final_sample = harmonic_out1 + harmonic_out2 + harmonic_out3;
+assign final_sample = (harmonic_out1 >>> 2) + (harmonic_out2 >>> 2) + (harmonic_out3 >>> 2);
 assign note_done = note_done1 || note_done2 || note_done3 || note_done4;
 assign sample_ready = harmonic_ready1 || harmonic_ready2 || harmonic_ready3;
 endmodule

@@ -5,7 +5,7 @@ module note_player_tb();
     reg [1:0] weight;
     
     /// Outputs ///
-    wire [17:0] harmonic_out;
+    wire [15:0] harmonic_out;
     wire harmonic_ready, beat;
     
 
