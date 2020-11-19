@@ -22,7 +22,7 @@ assign harm_step3 = step_size << 2;
         .clk(clk),
         .reset(reset),
         .step_size(step_size),
-        .generate_next(play_enable && generate_next_sample),
+        .generate_next(!note_done && play_enable && generate_next_sample),
         .sample_ready(samp_ready1),
         .sample(harm1)
     );
@@ -31,7 +31,7 @@ assign harm_step3 = step_size << 2;
         .clk(clk),
         .reset(reset),
         .step_size(harm_step2),
-        .generate_next(play_enable && generate_next_sample),
+        .generate_next(!note_done && play_enable && generate_next_sample),
         .sample_ready(samp_ready2),
         .sample(harm2)
     );
@@ -40,7 +40,7 @@ assign harm_step3 = step_size << 2;
         .clk(clk),
         .reset(reset),
         .step_size(harm_step3),
-        .generate_next(play_enable && generate_next_sample),
+        .generate_next(!note_done && play_enable && generate_next_sample),
         .sample_ready(samp_ready3),
         .sample(harm3)
     );
