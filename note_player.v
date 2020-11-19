@@ -44,9 +44,10 @@ create_harmonic ch1(
 	.sample_ready(harmonic_ready_temp)
     );
 
+
 dffr #(.WIDTH(18)) out_delay (
    .clk(clk),
-   .r(reset),
+   .r(reset || note_done),
    .d(harmonic_out_temp),
    .q(harmonic_out)
 );

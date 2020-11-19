@@ -22,9 +22,9 @@ module song_rom (
 	assign memory[	  5	] =	{1'b0,6'd39,6'd32,3'b000};	// Note: 4B
 	assign memory[	  6	] =	{1'b0,6'd51,6'd16,3'b000};	// Note: 5B
 	assign memory[	  7	] =	{1'b1,6'd0,6'd16,3'b000};	// Note: rest
-	assign memory[	  8	] =	{1'b0,6'd0,6'd32,3'b000};	// Note: rest
+	assign memory[	  8	] =	{1'b0,6'd28,6'd16,3'b000};	// Note: 3C
 	assign memory[	  9	] =	{1'b1,6'd0,6'd16,3'b000};	// Note: rest
-	assign memory[	 10	] =	{1'b0,6'd0,6'd16,3'b000};	// Note: rest
+	assign memory[	 10	] =	{1'b0,6'd28,6'd16,3'b000};	// Note: 3C
 	assign memory[	 11	] =	{1'b1,6'd0,6'd16,3'b000};	// Note: rest
 	assign memory[	 12	] =	{1'b0,6'd30,6'd48,3'b000};	// Note: 3D
 	assign memory[	 13	] =	{1'b0,6'd54,6'd48,3'b000};	// Note: 5D
@@ -75,7 +75,7 @@ module song_rom (
 	assign memory[	 58	] =	{1'b0,6'd47,6'd18,3'b000};	// Note: 4G
 	assign memory[	 59	] =	{1'b1,6'd0,6'd18,3'b000};	// Note: rest
 	assign memory[	 60	] =	{1'b1,6'd0,6'd48,3'b000};	// Note: rest
-	assign memory[	 61	] =	{1'b0,6'd0,6'd0,3'b000};	// Note: rest
+	assign memory[	 61	] =	{1'b1,6'd28,6'd0,3'b000};	// Note: 3C
 	assign memory[	 62	] =	{1'b0,6'd37,6'd63,3'b000};	// Note: 4A
 	assign memory[	 63	] =	{1'b1,6'd0,6'd63,3'b000};	// Note: rest
 	assign memory[	 64	] =	{1'b0,6'd40,6'd48,3'b000};	// Note: 4C
@@ -107,7 +107,7 @@ module song_rom (
 	assign memory[	 90	] =	{1'b0,6'd47,6'd32,3'b000};	// Note: 4G
 	assign memory[	 91	] =	{1'b0,6'd51,6'd16,3'b000};	// Note: 5B
 	assign memory[	 92	] =	{1'b1,6'd0,6'd32,3'b000};	// Note: rest
-	assign memory[	 93	] =	{1'b0,6'd0,6'd0,3'b000};	// Note: rest
+	assign memory[	 93	] =	{1'b0,6'd28,6'd0,3'b000};	// Note: 3C
 	assign memory[	 94	] =	{1'b1,6'd0,6'd0,3'b000};	// Note: rest
 	assign memory[	 95	] =	{1'b1,6'd0,6'd26,3'b000};	// Note: rest
 	assign memory[	 96	] =	{1'b0,6'd35,6'd36,3'b000};	// Note: 3G

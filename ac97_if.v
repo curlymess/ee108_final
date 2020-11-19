@@ -6,10 +6,10 @@
 module ac97_if(
     input  ClkIn,
     input Reset,
-    input  [15:0] PCM_Playback_Left,
-    input  [15:0] PCM_Playback_Right,
-    output wire [15:0] PCM_Record_Left,
-    output wire [15:0] PCM_Record_Right,
+    input  [17:0] PCM_Playback_Left,
+    input  [17:0] PCM_Playback_Right,
+    output wire [17:0] PCM_Record_Left,
+    output wire [17:0] PCM_Record_Right,
     output wire PCM_Record_Valid,
     output wire PCM_Playback_Accept,
     output wire AC97Reset_n,
@@ -54,8 +54,8 @@ module ac97_if(
     );
     assign new_frame_one_pulse = ~New_Frame_previous && PCM_Playback_Accept;
 
-    wire [31:0] previous_latched_sample;
-    dffre #(32) latched_sample(
+    wire [35:0] previous_latched_sample;
+    dffre #(36) latched_sample(
         .clk(ClkIn),
         .r(resetState),
         .en(new_frame_one_pulse),

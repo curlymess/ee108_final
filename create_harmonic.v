@@ -33,7 +33,7 @@ assign harm_step3 = step_size << 2;
         .reset(reset),
         .step_size(harm_step2),
         .generate_next(!note_done && play_enable && generate_next_sample),
-        .sample_ready(samp_ready2), ///////?????
+        .sample_ready(samp_ready2),
         .sample(harm2)
     );
 
@@ -42,7 +42,7 @@ assign harm_step3 = step_size << 2;
         .reset(reset),
         .step_size(harm_step3),
         .generate_next(!note_done &&play_enable && generate_next_sample),
-        .sample_ready(samp_ready3), ///////////????
+        .sample_ready(samp_ready3),
         .sample(harm3)
     );
 	
@@ -50,6 +50,6 @@ assign harm_step3 = step_size << 2;
 assign out1 = harm1;
 assign out2 = ((harm1 >>> 1) + (harm1 >>> 3)) + ((harm2 >>> 2) + (harm2 >>> 3));
 assign out3 = ((harm1 >>> 1) + (harm1 >>> 3)) + (harm2 >>> 2) + (harm3 >>> 3);
-assign harmonic_out = (weight == 0) ? out1 : (weight == 1) ? out2 : out3;
-assign sample_ready = samp_ready1 && samp_ready2 && samp_ready3;
+assign harmonic_out = ((weight == 0) ? out1 : (weight == 1) ? out2 : out3);
+assign sample_ready = samp_ready1 || samp_ready2 || samp_ready3;
 endmodule
