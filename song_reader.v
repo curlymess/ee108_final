@@ -19,9 +19,9 @@ module song_reader(
     input wire play,
     input [1:0] song,
     input note_done,
+    input activate_done,
     input ff_switch0,
     input r_switch1,
-    input activate_done,
     output wire song_done,
     output wire [5:0] note,
     output wire [5:0] duration,
@@ -56,25 +56,18 @@ song_rom rom(.clk(clk), .addr(rom_addr), .dout(rom_out));
 
 always @(*) begin
     case (state)
-       `PAUSED:            next = play ? ((r_switch1 && curr_note_num == 5'd0) ? `PAUSED :`RETRIEVE_NOTE) : `PAUSED;
-       `RETRIEVE_NOTE:     next = play ? ((r_switch1 && curr_note_num == 5'd0) ? `PAUSED :`NEW_NOTE_READY) : `PAUSED;
+       `PAUSED:            next = play ? `RETRIEVE_NOTE : `PAUSED;
+       `RETRIEVE_NOTE:     next = play ? `NEW_NOTE_READY : `PAUSED;
        `NEW_NOTE_READY:    next = play ? `WAIT: `PAUSED;
        `WAIT:              next = !play ? `PAUSED : 
                                     (rom_out[15] ? activate_done : note_done) ? `CHANGE_ADDRESS : `WAIT;
-       `CHANGE_ADDRESS: begin
-            if(r_switch1) begin
-                next = (play && curr_note_num == 5'd0) ? `PAUSED : `RETRIEVE_NOTE;
-            end else begin
-                next = (play && ~overflow) ? `RETRIEVE_NOTE : `PAUSED;
-            end
-        end
+       `CHANGE_ADDRESS:    next = (play && ~overflow) ? `RETRIEVE_NOTE : `PAUSED;
        default:            next = `PAUSED;
     endcase
 end
     
 assign {overflow, next_note_num} =
-       (state == `CHANGE_ADDRESS) ? (r_switch1 ? ({1'b0, curr_note_num} - 1) : ({1'b0, curr_note_num} + 1))
-                                     : {1'b0, curr_note_num};
+       (state == `CHANGE_ADDRESS) ? ({1'b0, curr_note_num} + 1): {1'b0, curr_note_num};
 wire [5:0] duration_temp = rom_out[8:3];
 
 /////// Outputs ///////                                     
@@ -82,6 +75,6 @@ assign new_note = (state == `NEW_NOTE_READY);
 assign note = rom_out[14:9];
 assign duration = (ff_switch0 || r_switch1) ? duration_temp >> 1 : duration_temp; // half the duration if ff or rewind
 assign activate = rom_out[15];
-assign song_done = overflow || ((r_switch1 == 1) && curr_note_num == 5'd0);
+assign song_done = overflow;
 
 endmodule
