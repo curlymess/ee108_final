@@ -29,7 +29,7 @@ module sine_reader(
     );
     assign sample = addr[21] ? -sine_rom_out : sine_rom_out;
 
-    wire almost_ready;
+    wire almost_ready, almost_ready_pt2;
     dff #(.WIDTH(1)) ready_1 (
         .clk(clk),
         .d(generate_next),
@@ -38,6 +38,12 @@ module sine_reader(
     dff #(.WIDTH(1)) ready_2 (
         .clk(clk),
         .d(almost_ready),
+        .q(almost_ready_pt2)
+    );
+    
+    dff #(.WIDTH(1)) ready_3 (
+        .clk(clk),
+        .d(almost_ready_pt2),
         .q(sample_ready)
     );
 
