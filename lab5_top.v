@@ -56,7 +56,7 @@ module lab5_top(
     assign {weight_button, reset, play_button, next_button} = btn;
 
     wire ff_switch0, r_switch1;
-    assign {ff_switch0, r_switch1} = sw;
+    assign {r_switch1, ff_switch0} = sw;
     
     // Clock converter
     wire clk_100, display_clk, serial_clk;
