@@ -1,9 +1,8 @@
 module note_player_tb();
     /// Inputs ///
-    reg clk, reset, play_enable, generate_next_sample, load_new_note;
+    reg clk, reset, play_enable, generate_next_sample, load_new_note, note_done;
     reg [5:0] note_to_load;
     reg [1:0] weight;
-    
     /// Outputs ///
     wire [15:0] harmonic_out;
     wire harmonic_ready, beat;
@@ -16,6 +15,7 @@ module note_player_tb();
     .note_to_load(note_to_load),        // The note to play
     .load_new_note(load_new_note),      // Tells us when we have a new note to load
 	.weight(weight),			        // Informs create_harmonic how the weight of each harmony
+	.note_done(note_done),
     .generate_next_sample(generate_next_sample),// Tells us when the codec wants a new sample
     .harmonic_out(harmonic_out),        // Our sample output
     .harmonic_ready(harmonic_ready)
@@ -46,39 +46,48 @@ module note_player_tb();
   //////// Note 1 ////////
         // weight 0
         play_enable = 1'b1;
+        note_done = 1'b0;
         weight = 2'd0;
         generate_next_sample = 1'b1;
-        note_to_load = 5'd1;
+        note_to_load = 5'd45;
+        
+        //Load Note Into Note Player
         #10
         load_new_note = 1'b1;
         #10 
         load_new_note = 1'b0;
         #10000
-        // weight 1 
+        
+
+        
+        // Change to weight 1 //
         weight = 2'd1;
         #10000
         // weight 2
         weight = 2'd2;
         #10000
+        
         // play enable LOW
         play_enable = 1'b0;
         #5000
-  //////// Note 22 ////////
-        // weight 0 // play enable still LOW
-        note_to_load = 5'd22;
-        weight = 1'b0;
-        load_new_note = 1'b1;
-        #1000
+        //Turn on Note done and load new note      
         play_enable = 1'b1; // play enable HIGH
-        #10
+
+        #5000        
+        weight = 2'd0;
+      
+        note_to_load = 5'd32;
+        load_new_note = 1'b1;
+        #10 
         load_new_note = 1'b0;
-        #10000
-        // weight 1
+        #10000 
+        
+        // weight 1       
         weight = 2'd1;
         #10000
         // weight 2
         weight = 2'd2;
-        #10000
+        #1000
 
     $stop;
     end
