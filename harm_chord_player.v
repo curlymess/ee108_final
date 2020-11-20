@@ -8,9 +8,9 @@ module harm_chord_player(
     input  activate,            // Tells us if the counters should counting
     input  beat,                // This is our 1/48th second beat
     input  generate_next_sample,// Tells us when the codec wants a new sample
-    input  [1:0] weight,
+    input  [1:0] weight,        // When we are done with a note this stays high - combo of note_done1,2,3
 	output note_done,
-    output signed [15:0] final_sample,  // Our sample output - note1,2,3 and harmonics together!            // When we are done with a note this stays high - combo of note_done1,2,3
+    output signed [15:0] final_sample,  // Our sample output - note1,2,3 and harmonics together!            
     output activate_done,
     output sample_ready          // Tells the codec when we've got a sample - combo of sample_ready1,2,3
 );

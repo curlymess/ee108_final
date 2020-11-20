@@ -82,6 +82,6 @@ assign new_note = (state == `NEW_NOTE_READY);
 assign note = rom_out[14:9];
 assign duration = (ff_switch0 || r_switch1) ? duration_temp >> 1 : duration_temp; // half the duration if ff or rewind
 assign activate = rom_out[15];
-assign song_done = overflow;
+assign song_done = overflow || ((r_switch1 == 1) && curr_note_num == 5'd0);
 
 endmodule
