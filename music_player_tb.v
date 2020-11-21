@@ -72,17 +72,30 @@ module music_player_tb();
         $display("Starting playing song 0...");
         @(negedge clk);
         play_button = 1'b1;
-        //weight_button = 1'b1;
 
         @(negedge clk);
         play_button = 1'b0;
-        //weight_button = 1'b0;
 
-        repeat (delay) begin
+        repeat (1000000) begin
             @(negedge clk);
         end
-        //2nd song
+        
+        //ff_switch0 = 1'b1;
+        next_button = 1'b1;
+        #10
+        next_button = 1'b0;
         play_button = 1'b1;
+        #100
+        play_button = 1'b0;
+        
+        repeat (2000000) begin
+            @(negedge clk);
+        end
+        
+        //2nd song
+        ff_switch0 = 1'b0;
+        play_button = 1'b1;
+        //weight_button = 2'd2;
         #10
         play_button = 1'b0;
 
@@ -107,191 +120,9 @@ module music_player_tb();
         
         repeat (delay) begin
             @(negedge clk);
-        end        
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        //weight_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-//        repeat (delay) begin
-//            @(negedge clk);
-//        end
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-//        repeat (delay) begin
-//            @(negedge clk);
-//        end
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-//        repeat (delay) begin
-//            @(negedge clk);
-//        end
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-//        repeat (delay) begin
-//            @(negedge clk);
-//        end
+        end
         
-        
-        
-        
-
-        
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        //weight_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-//        repeat (delay) begin
-//            @(negedge clk);
-//        end
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-//        repeat (delay) begin
-//            @(negedge clk);
-//        end
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-//        repeat (delay) begin
-//            @(negedge clk);
-//        end
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-//        repeat (delay) begin
-//            @(negedge clk);
-//        end
-        
-        
-        
-
-//        // Reset        
-
-//        $display("Reset song 0...");
-//        reset = 1'b1;
-//        @(negedge clk);
-//        reset = 1'b0;
-        
-//        weight_button = 2'd1;
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-        
-              
-//        repeat (delay) begin
-//            @(negedge clk);
-//        end
-
-//        //case3
-//        reset = 1'b1;
-//        @(negedge clk);
-//        reset = 1'b0;
-//        weight_button = 2'd1;
-
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        //weight_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-//        //weight_button = 1'b0; 
-//        @(negedge clk);
-//        //weight_button = 1'b1;
-//        @(negedge clk);
-//        //weight_button = 1'b0;
-        
-//        repeat (delay) begin
-//            @(negedge clk);
-//        end
-        
-        
-        
-        
-        
-        
-//        // Start playing
-//        $display("Starting playing song 0 again...");
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-
-//        repeat (delay) begin
-//            @(negedge clk);
-//        end
-        
-        // Reset
-//        $display("Reset song 0...");
-//        reset = 1'b1;
-//        @(negedge clk);
-//        reset = 1'b0;
-        
-        // Start playing
-//        $display("Starting playing song 0 again...");
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-
-//        repeat (delay + 50000) begin
-//            @(negedge clk);
-//        end
-//     // Pause  
-//        $display("Pause...");
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-
-//        repeat (delay/4) begin
-//            @(negedge clk);
-//        end
-   
-//        // Play 
-//        $display("Resume playing song 0..."); 
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-
-//        repeat (delay) begin
-//            @(negedge clk);
-//        end
-
-//        // Next Song  
-//        $display("Next song...");
-//        @(negedge clk);
-//        next_button = 1'b1;
-//        @(negedge clk);
-//        next_button = 1'b0;
-
-//        repeat (delay/8) begin
-//            @(negedge clk);
-//        end
-
-
-//        // Play
-//        $display("Starting playing song 1...");  
-//        @(negedge clk);
-//        play_button = 1'b1;
-//        @(negedge clk);
-//        play_button = 1'b0;
-
-//        repeat (delay) begin
-//            @(negedge clk);
-//        end
-
+            
         $finish;
     end
 
