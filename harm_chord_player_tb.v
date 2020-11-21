@@ -8,7 +8,7 @@ reg [5:0] note_to_load, duration;
 wire sample_ready, note_done, beat;
 wire [15:0] final_sample;
 
-beat_generator #(.WIDTH(17), .STOP(5)) beat_generator(
+beat_generator #(.WIDTH(17), .STOP(20)) beat_generator(
      .clk(clk),
      .reset(reset),
      .en(1'b1),
@@ -49,14 +49,15 @@ harm_chord_player hcp1(
         reset = 1'b1;
         
         play_enable = 1'b1;
-        weight = 2'd2;
+        weight = 2'd0;
         activate = 1'b0; // off until load all the notes
         #30
 
 /////////////////////// 3 NOTE CHORD ///////////////////////
 ///////// Same Duration
         // Chord - load note 1, same durations
-        duration = 6'd4;
+       #10
+        duration = 6'd12;
         note_to_load = 6'd36;
         load_new_note = 1'b1;
         #10
@@ -64,7 +65,7 @@ harm_chord_player hcp1(
         #10
         
         // Chord - load note 2, same durations
-        duration = 6'd4;
+        duration = 6'd12;
         note_to_load = 6'd32;
         load_new_note = 1'b1;
         #10
@@ -72,7 +73,7 @@ harm_chord_player hcp1(
         #10       
         
         // Chord - load note 3, same durations
-        duration = 6'd4;
+        duration = 6'd12;
         note_to_load = 6'd26;
         load_new_note = 1'b1;
         #10
@@ -149,7 +150,7 @@ harm_chord_player hcp1(
         #500
         generate_next_sample = 1'b0;
         $display("ONE NOTE:");
-        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load, duration, load_new_note, sample_out1);
+        //$display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load, duration, load_new_note, sample_out1);
         #1000
         activate = 1'b0;
         #50000
@@ -167,7 +168,7 @@ harm_chord_player hcp1(
         #500
         generate_next_sample = 1'b0;
         $display("ONE NOTE:");
-        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load, duration, load_new_note, sample_out2);
+        //$display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load, duration, load_new_note, sample_out2);
         #1000
         activate = 1'b0;
         
@@ -192,8 +193,8 @@ harm_chord_player hcp1(
         #500
         generate_next_sample = 1'b0;
         $display("TWO NOTES:");
-        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load1, duration1, load_new_note1, sample_out1);
-        $display("note2 = %d, duration2 = %d, load_new_note2 = %d, sample_out2 = %b", note_to_load2, duration2, load_new_note2, sample_out2);
+        //$display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load1, duration1, load_new_note1, sample_out1);
+        //$display("note2 = %d, duration2 = %d, load_new_note2 = %d, sample_out2 = %b", note_to_load2, duration2, load_new_note2, sample_out2);
         #1000
  
         /// Test 3 
@@ -224,9 +225,9 @@ harm_chord_player hcp1(
         #500
         generate_next_sample = 1'b0;
         $display("THREE NOTES:");
-        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load1, duration1, load_new_note1, sample_out1);
-        $display("note2 = %d, duration2 = %d, load_new_note2 = %d, sample_out2 = %b", note_to_load2, duration2, load_new_note2, sample_out2);
-        $display("note3 = %d, duration3 = %d, load_new_note3 = %d, sample_out3 = %b", note_to_load3, duration3, load_new_note3, sample_out3);
+//        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load1, duration1, load_new_note1, sample_out1);
+//        $display("note2 = %d, duration2 = %d, load_new_note2 = %d, sample_out2 = %b", note_to_load2, duration2, load_new_note2, sample_out2);
+//        $display("note3 = %d, duration3 = %d, load_new_note3 = %d, sample_out3 = %b", note_to_load3, duration3, load_new_note3, sample_out3);
         #1000
         load_new_note = 1'b0;   
 
@@ -256,9 +257,9 @@ harm_chord_player hcp1(
         #500
         generate_next_sample = 1'b0;
         $display("THREE NOTES and DIFFERENT Durations");
-        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load1, duration1, load_new_note1, sample_out1);
-        $display("note2 = %d, duration2 = %d, load_new_note2 = %d, sample_out2 = %b", note_to_load2, duration2, load_new_note2, sample_out2);
-        $display("note3 = %d, duration3 = %d, load_new_note3 = %d, sample_out3 = %b", note_to_load3, duration3, load_new_note3, sample_out3);
+//        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load1, duration1, load_new_note1, sample_out1);
+//        $display("note2 = %d, duration2 = %d, load_new_note2 = %d, sample_out2 = %b", note_to_load2, duration2, load_new_note2, sample_out2);
+//        $display("note3 = %d, duration3 = %d, load_new_note3 = %d, sample_out3 = %b", note_to_load3, duration3, load_new_note3, sample_out3);
         #1000
         activate = 1'b0;
         /// Test 5 
@@ -287,9 +288,9 @@ harm_chord_player hcp1(
         #500
         generate_next_sample = 1'b0;
         $display("THREE NOTES and DIFFERENT Durations");
-        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load1, duration1, load_new_note1, sample_out1);
-        $display("note2 = %d, duration2 = %d, load_new_note2 = %d, sample_out2 = %b", note_to_load2, duration2, load_new_note2, sample_out2);
-        $display("note3 = %d, duration3 = %d, load_new_note3 = %d, sample_out3 = %b", note_to_load3, duration3, load_new_note3, sample_out3);
+//        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load1, duration1, load_new_note1, sample_out1);
+//        $display("note2 = %d, duration2 = %d, load_new_note2 = %d, sample_out2 = %b", note_to_load2, duration2, load_new_note2, sample_out2);
+//        $display("note3 = %d, duration3 = %d, load_new_note3 = %d, sample_out3 = %b", note_to_load3, duration3, load_new_note3, sample_out3);
         #1000       
  
         /// Test 6 
@@ -318,9 +319,9 @@ harm_chord_player hcp1(
         #500
         generate_next_sample = 1'b0;
         $display("THREE NOTES and DIFFERENT Durations");
-        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load1, duration1, load_new_note1, sample_out1);
-        $display("note2 = %d, duration2 = %d, load_new_note2 = %d, sample_out2 = %b", note_to_load2, duration2, load_new_note2, sample_out2);
-        $display("note3 = %d, duration3 = %d, load_new_note3 = %d, sample_out3 = %b", note_to_load3, duration3, load_new_note3, sample_out3);
+//        $display("note1 = %d, duration1 = %d, load_new_note1 = %d, sample_out1 = %b", note_to_load1, duration1, load_new_note1, sample_out1);
+//        $display("note2 = %d, duration2 = %d, load_new_note2 = %d, sample_out2 = %b", note_to_load2, duration2, load_new_note2, sample_out2);
+//        $display("note3 = %d, duration3 = %d, load_new_note3 = %d, sample_out3 = %b", note_to_load3, duration3, load_new_note3, sample_out3);
         #1000           
         activate = 1'b0;
         

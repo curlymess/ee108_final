@@ -17,9 +17,9 @@ module harm_chord_player(
 
 /// Generate Samples for each Note    
 reg  [5:0] duration1, duration2, duration3, duration4;
-reg  [5:0] note_to_load1, note_to_load2, note_to_load3, note_to_load4; // is it a problem these are regs and not wires since they are going into modules?
+reg  [5:0] note_to_load1, note_to_load2, note_to_load3, note_to_load4; 
 reg  load_new_note1, load_new_note2, load_new_note3, load_new_note4;
-wire note_done1, note_done2, note_done3, note_done4;
+wire note_done1, note_done2, note_done3, note_done4, activate2;
 	
 //////////// COUNTERS ////////////    
 wire [5:0] count1, count2, count3, count4, next_count1, next_count2, next_count3, next_count4;
@@ -48,15 +48,6 @@ dffre #(.WIDTH(6)) duration_counter3 (
    .q(count3)
 );
 
-
-wire [5:0] dur, next_dur;
-dffre #(.WIDTH(6)) dur_ff(
-   .clk(clk),
-   .r(reset),
-   .en(load_new_note4 && play_enable),
-   .d(next_dur),
-   .q(dur)
-);
 dffre #(.WIDTH(6)) duration_counter4 (
    .clk(clk),
    .r(reset),
@@ -83,8 +74,6 @@ assign next_count3 = (reset || note_done3 || load_new_note3 || count3 == 6'b0)
                     ? duration3 : (count3 - 6'd1);
 assign next_count4 = (reset || note_done4 || load_new_note4 || count4 ==6'b0) 
                     ? duration4: (count4-1);
-
-assign next_dur =  duration4;
 
 
 

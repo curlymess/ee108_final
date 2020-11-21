@@ -49,7 +49,7 @@ module note_player_tb();
         note_done = 1'b0;
         weight = 2'd0;
         generate_next_sample = 1'b1;
-        note_to_load = 5'd45;
+        note_to_load = 6'd45;
         
         //Load Note Into Note Player
         #10
@@ -76,7 +76,7 @@ module note_player_tb();
         #5000        
         weight = 2'd0;
       
-        note_to_load = 5'd32;
+        note_to_load = 6'd32;
         load_new_note = 1'b1;
         #10 
         load_new_note = 1'b0;

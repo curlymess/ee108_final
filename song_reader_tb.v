@@ -122,7 +122,7 @@ module song_reader_tb();
     #1300
     
     // Play song 0 - fast - r
-    song      = 2'd0;
+    song      = 2'd2;
     note_done = 1'b1;
     ff_switch0 = 1'b0;
     r_switch1  = 1'b1; 
